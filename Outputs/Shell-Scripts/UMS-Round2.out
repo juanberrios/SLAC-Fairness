@@ -1,0 +1,251 @@
+
+==============================================================================
+Unfairness mitigation strategies: round 2
+Running 8 strategies
+==============================================================================
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.1.1:
+  Combination of:
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 10%)
+  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4679 tokens with 162 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent     563 2548 3111
+  Present    284 1284 1568
+  Sum        847 3832 4679
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.6646989 0.6649269
+  Present 0.3353011 0.3350731
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.1.1.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.1.2:
+  Combination of:
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 10%)
+  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4817 tokens with 162 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent    1504 2548 4052
+  Present    284  481  765
+  Sum       1788 3029 4817
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.8411633 0.8412017
+  Present 0.1588367 0.1587983
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.1.2.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.2.1:
+  Combination of:
+  - 2.2: Theoretical predictor selection, removing all F0 measures
+  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4679 tokens with 176 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent     563 2548 3111
+  Present    284 1284 1568
+  Sum        847 3832 4679
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.6646989 0.6649269
+  Present 0.3353011 0.3350731
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.2.1.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.2.2:
+  Combination of:
+  - 2.2: Theoretical predictor selection, removing all F0 measures
+  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4817 tokens with 176 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent    1504 2548 4052
+  Present    284  481  765
+  Sum       1788 3029 4817
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.8411633 0.8412017
+  Present 0.1588367 0.1587983
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.2.2.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.3.1:
+  Combination of:
+  - 2.3: Empirical and theoretical predictor selection, removing only F0 measures that correlate with Gender
+  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4679 tokens with 178 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent     563 2548 3111
+  Present    284 1284 1568
+  Sum        847 3832 4679
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.6646989 0.6649269
+  Present 0.3353011 0.3350731
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.3.1.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.3.2:
+  Combination of:
+  - 2.3: Empirical and theoretical predictor selection, removing only F0 measures that correlate with Gender
+  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4817 tokens with 178 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent    1504 2548 4052
+  Present    284  481  765
+  Sum       1788 3029 4817
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.8411633 0.8412017
+  Present 0.1588367 0.1587983
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.3.2.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.1:
+  Combination of:
+  - 3.1: Normalize F0 by speaker
+  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4679 tokens with 180 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent     563 2548 3111
+  Present    284 1284 1568
+  Sum        847 3832 4679
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.6646989 0.6649269
+  Present 0.3353011 0.3350731
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.1.Rds
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.2:
+  Combination of:
+  - 3.1: Normalize F0 by speaker
+  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
+--------------------------------------------------------------------------------
+Data: 4817 tokens with 180 predictors
+         Gender
+Rpresent  Female Male  Sum
+  Absent    1504 2548 4052
+  Present    284  481  765
+  Sum       1788 3029 4817
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.8411633 0.8412017
+  Present 0.1588367 0.1587983
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.2.Rds
+
+--------------------------------------------------------------------------------
+Session info
+--------------------------------------------------------------------------------
+R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Red Hat Enterprise Linux
+
+Matrix products: default
+BLAS:   /usr/lib64/libblas.so.3.4.2
+LAPACK: /usr/lib64/liblapack.so.3.4.2
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] this.path_1.0.0 dplyr_1.0.10    rlang_1.0.6     purrr_0.3.5    
+ [5] caret_6.0-92    lattice_0.20-45 ggplot2_3.3.6   ROCR_1.0-11    
+ [9] tidyr_1.2.1     magrittr_2.0.3  optparse_1.7.3 
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.0     reshape2_1.4.4       listenv_0.8.0       
+ [4] splines_4.2.0        colorspace_2.0-3     vctrs_0.4.1         
+ [7] generics_0.1.3       stats4_4.2.0         getopt_1.20.3       
+[10] utf8_1.2.2           survival_3.3-1       prodlim_2019.11.13  
+[13] ModelMetrics_1.2.2.2 pillar_1.8.1         glue_1.6.2          
+[16] withr_2.5.0          DBI_1.1.3            foreach_1.5.2       
+[19] lifecycle_1.0.1      plyr_1.8.8           lava_1.6.10         
+[22] stringr_1.4.1        timeDate_3043.102    munsell_0.5.0       
+[25] gtable_0.3.1         future_1.29.0        recipes_0.2.0       
+[28] codetools_0.2-18     parallel_4.2.0       class_7.3-20        
+[31] fansi_1.0.3          Rcpp_1.0.9           scales_1.2.1        
+[34] ipred_0.9-12         parallelly_1.32.1    digest_0.6.30       
+[37] stringi_1.7.8        grid_4.2.0           hardhat_0.2.0       
+[40] cli_3.4.1            tools_4.2.0          tibble_3.1.8        
+[43] future.apply_1.10.0  pkgconfig_2.0.3      MASS_7.3-57         
+[46] Matrix_1.5-3         data.table_1.14.6    pROC_1.18.0         
+[49] lubridate_1.8.0      gower_1.0.0          assertthat_0.2.1    
+[52] iterators_1.0.14     R6_2.5.1             globals_0.16.2      
+[55] rpart_4.1.16         nnet_7.3-17          nlme_3.1-157        
+[58] compiler_4.2.0      
+==============================================================================
+                                JOB STATISTICS                                
+==============================================================================
+
+           JobId: 9535056
+      SubmitTime: 2023-06-20T14:13:47
+         EndTime: 2023-06-20T15:13:49
+         RunTime: 00:06:53
+            TRES: cpu=12,mem=48216M,node=1,billing=9
+       Partition: smp
+        NodeList: smp-n141
+         Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/UMS-Round2.sh
+
+==============================================================================
+ For more information use the command:
+   - `sacct -M smp -j 9535056 -S 2023-06-20T14:13:47 -E 2023-06-20T15:13:49`
+
+ To control the output of the above command:
+   - Add `--format=<field1,field2,etc>` with fields of interest
+   - See the list of all possible fields by running: `sacct --helpformat`
+==============================================================================

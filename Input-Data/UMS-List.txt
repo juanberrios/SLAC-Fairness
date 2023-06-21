@@ -1,0 +1,29 @@
+UMS	Description
+0.0	Baseline auto-coder of Rpresent, with all data and predictors
+0.1.1	Classifier of Gender
+0.1.2	Classifier of Gender, no pitch measures
+0.1.3	Classifier of Gender, only pitch measures
+0.2	Separate auto-coders of Rpresent by gender
+1.1	Downsample men to equalize token counts by Gender
+1.2	Downsample Absent to equalize token counts by Rpresent
+1.3.1	Downsample women's Absent to equalize Rpresent base rates by Gender
+1.3.2	Downsample men's Present to equalize Rpresent base rates by Gender
+1.4	Downsample men's data to equalize (a) token counts by Gender and (b) Rpresent base rates by Gender
+1.5	Downsample Absent data to equalize (a) token counts by Rpresent and (b) Gender base rates by Rpresent
+1.6	Downsample Gender x Rpresent to equalize token counts by Gender x Rpresent
+2.1.1	Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 10%)
+2.1.2	Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 20%)
+2.1.3	Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 50%)
+2.1.4	Empirical predictor selection, without measures with differential importance in separate-Gender auto-coders of Rpresent (difference in rank places: at least p/2)
+2.1.5	Empirical predictor selection, without measures with differential importance in separate-Gender auto-coders of Rpresent (difference in rank places: at least p/3)
+2.2	Theoretical predictor selection, removing all F0 measures
+2.3	Empirical and theoretical predictor selection, removing only F0 measures that correlate with Gender
+3.1	Normalize F0 by speaker
+4.1.1	Combination of 2.1.1 & 1.3.1
+4.1.2	Combination of 2.1.1 & 1.3.2
+4.2.1	Combination of 2.2 & 1.3.1
+4.2.2	Combination of 2.2 & 1.3.2
+4.3.1	Combination of 2.3 & 1.3.1
+4.3.2	Combination of 2.3 & 1.3.2
+4.4.1	Combination of 3.1 & 1.3.1
+4.4.2	Combination of 3.1 & 1.3.2

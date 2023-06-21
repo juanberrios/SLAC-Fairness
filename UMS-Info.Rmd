@@ -1,0 +1,408 @@
+---
+title: Unfairness mitigation strategy descriptions
+author: "Dan Villarreal (Department of Linguistics, University of Pittsburgh)"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    number_sections: yes
+    df_print: paged
+    code_folding: show
+---
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+##knitr settings
+knitr::opts_chunk$set(echo = FALSE, comment = NA, fig.width=7, fig.height=4)
+
+##Packages
+library(tidyverse)
+library(rlang)
+library(magrittr)
+library(knitr)
+
+##Utility functions
+source("R-Scripts/UMS-Utils.R", keep.source=TRUE)
+
+##knitr::kable() wrapper function to format inside div.scroll-block
+scrollKable <- function(df, style="") {
+  library(knitr)
+  library(magrittr)
+  stopifnot("data.frame" %in% class(df))
+  stopifnot(is.character(style))
+  
+  kb <- 
+    df %>% 
+    kable("html", table.attr="class=\"table table-condensed\"", align="r", escape=FALSE) %>% 
+    paste0("<div class=\"scroll-block\" style=\"", style, "\">", ., "</div>", sep="\n") %>% 
+    set_class("knitr_kable") %>% 
+    set_attr("format", "html")
+  kb
+}
+
+##UMS list
+umsList <- read.csv("Input-Data/UMS-List.txt", sep="\t")
+
+##Training data
+trainingDataAll <-
+  readRDS("Input-Data/trainingData.Rds") %>%
+  filter(HowCoded=="Hand")
+```
+
+```{r, echo=FALSE, fig.alt="Creative Commons Shield: BY-NC-SA", fig.link="http://creativecommons.org/licenses/by-nc-sa/4.0/"}
+include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
+```
+
+
+# Introduction
+
+This page contains descriptions of the **unfairness mitigation strategies** (UMSs) analyzed for the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
+
+<div id="repo-nav">
+
+**Repository navigation:**
+
+- [Homepage](https://djvill.github.io/SLAC-Fairness)
+- [Repository code](https://github.com/djvill/SLAC-Fairness)
+- [Code for this page](https://github.com/djvill/SLAC-Fairness/tree/main/UMS-Info.Rmd)
+- [Analysis walkthrough](Analysis-Walkthrough.html)
+
+</div>
+
+# UMS codes
+
+UMSs are identified by 2- or 3-number decimal codes:
+
+- First digit: general category (e.g., "downsampling")
+  - 0.x(.y): Either the baseline auto-coder (UMS 0.0) or a "predecessor auto-coder" that provides data to inform other UMSs
+- Second digit: specific strategy (e.g., "achieve equal base rates by gender")
+- Third digit (optional): implementation (e.g., "achieve equal base rates by downsampling women's Absent tokens" vs. "...by downsampling men's Present tokens")
+  - Used when the specific strategy can be implemented multiple ways
+
+
+# UMS descriptions
+
+The UMSs fell into 4 categories:
+
+1. [**Downsampling**](#downsamp): Correct for imbalances in training data by randomly selecting tokens to remove.
+1. [**Valid predictor selection**](#valid-pred): Remove acoustic measures that could inadvertently signal gender.
+1. [**Normalization**](#normal): Control for acoustic variability that could inadvertently signal gender.
+1. [**Combinations of other strategies**](#combo): Downsampling plus valid predictor selection or normalization.
+
+All the UMSs modify the data fed into the model, rather than the model itself, as summarized here:
+
+| Category                  | Type of modification                                      |
+|---------------------------|-----------------------------------------------------------|
+| Downsampling              | Remove tokens (rows)                                      |
+| Valid predictor selection | Remove acoustic measures (columns)                        |
+| Normalization             | Transform acoustic measures but don't remove data         |
+| Combination               | Remove tokens AND (remove OR transform acoustic measures) |
+
+
+
+## Downsampling {#downsamp}
+
+These UMSs correct for imbalances in training data by randomly selecting tokens (rows) to remove.
+
+```{r}
+##Get relevant UMSs
+umsList %>% 
+  filter(UMS=="0.0" | startsWith(UMS, "1")) %>% 
+  ##Get data distributions
+  mutate(Data = map(UMS, ~ umsData(trainingDataAll, .x) %>% 
+                      with(table(Rpresent, Gender))),
+         Counts = map(Data, ~ .x %>% 
+                        addmargins() %>% 
+                        kable("html", table.attr="class=\"dist-table table-condensed\"", escape=FALSE)),
+         `Proportions by gender` = map(Data, ~ .x %>%
+                                         prop.table(2) %>%
+                                         addmargins(1) %>%
+                                         kable("html", table.attr="class=\"dist-table table-condensed\"", escape=FALSE,
+                                               digits=3)) %>%
+           ##Only show for relevant UMSs
+           modify_at(c(2, 3, 7, 8), ~ "N/A")) %>%
+  ##No longer need Data column
+  select(-Data) %>% 
+  ##Format as kable inside div.scroll-block
+  scrollKable()
+```
+
+
+<details>
+
+<summary>Note for code users</summary> 
+
+<div>
+
+These implementations are actually more general than its descriptions suggest.
+For example, UMSs 1.3.1 and 1.3.2 both achieve equal /r/ base rates by gender, by downsampling either women's Absent (1.3.1) or men's Present (1.3.2).
+However, `umsData()` actually translates this into "downsample one of the classes from the smaller group" vs. "the larger group", automatically detecting which class to downsample from which group.
+
+We can demonstrate this generality via a hypothetical dataset in which women are the larger group: 
+
+```{r, echo=TRUE}
+##Set up hypothetical dataset where Female tokens outnumber Male
+dat1 <- tribble(
+  ~Gender,  ~Rpresent, ~n,
+  "Female", "Absent",  400,
+  "Female", "Present", 1000,
+  "Male",   "Absent",  200,
+  "Male",   "Present", 400,
+) %>% 
+  ##Expand to individual rows
+  uncount(n) %>% 
+  ##Add dummy predictor
+  mutate(var1 = runif(n()))
+
+##In dataset: women more numerous than men, greater % Present than men
+umsData(dat1, "0.0", predictors=var1) %>% 
+  printData("1.3.1") # Print as though applying UMS 1.3.1 (for proportions)
+```
+
+
+UMS 1.3.1 should downsample one class from the _smaller_ group to match the class distribution of the _larger_ group.
+Indeed, applying UMS 1.3.1 to this dataset results in fewer Absent tokens for men:
+
+```{r, echo=TRUE, results="hold"}
+umsData(dat1, "1.3.1", predictors=var1) %>% 
+  printData("1.3.1")
+```
+
+By contrast, UMS 1.3.2 should downsample one class from the _larger_ group to match the class distribution of the _smaller_ group.
+Indeed, applying UMS 1.3.2 to this dataset results in fewer Present tokens for women:
+
+```{r, echo=TRUE, results="hold"}
+##UMS 1.3.2 should downsample larger group to match % Absent/Present of smaller group
+umsData(dat1, "1.3.2", predictors=var1) %>% 
+  printData("1.3.2")
+##As expected, women's Present downsampled
+```
+
+</div>
+
+</details>
+
+
+## Valid predictor selection {#valid-pred}
+
+These UMSs remove acoustic measures (columns) that could inadvertently signal gender.
+
+```{r}
+basePreds <- 
+  trainingDataAll %>% 
+  umsData("0.0") %>% 
+  select(-c(Rpresent, Gender)) %>% 
+  colnames()
+set.seed(346)
+umsList %>% 
+  filter(UMS=="0.0" | startsWith(UMS, "2")) %>% 
+  ##Get predictors
+  mutate(Preds = map(UMS, ~ trainingDataAll %>% 
+                       umsData(.x, varimpDir="Outputs/Other/") %>% 
+                       select(-c(Rpresent, Gender)) %>% 
+                       colnames()),
+         GonePreds = map(Preds, ~ setdiff(basePreds, .x)),
+         `Num. predictors` = map_int(Preds, length),
+         `Num. removed` = 180 - `Num. predictors`,
+         `Predictors removed` = GonePreds %>% 
+           map_if(~ length(.x) > 0, ~ paste0("`", .x, "`"), .else=~"N/A") %>% 
+           map_if(~ length(.x) > 6,
+                  ~ .x %>% 
+                    sample(6) %>% 
+                    sort() %>% 
+                    c("...")) %>% 
+           map_chr(paste, collapse=", ")) %>% 
+  ##No longer need Preds & GonePreds
+  select(-c(Preds, GonePreds)) %>% 
+  ##Format as kable inside div.scroll-block
+  scrollKable()
+```
+
+<details>
+
+<summary>More info</summary>
+
+<div>
+
+Most of these UMSs relied on "predecessor" auto-coders: UMS 0.1.1 (which used the same predictor set to classify gender rather than /r/) and UMS 0.2 (one /r/ auto-coder for women's tokens, one for men's).
+Here are the variable importances for those auto-coders:
+
+```{r, echo=TRUE}
+##UMS 0.1.1: Classifier of Gender
+vi011 <- read.csv("Outputs/Other/Var-Imp_UMS0.1.1.csv")
+vi011 %>% 
+  mutate(Rank = rank(desc(Importance))) %>% 
+  arrange(Rank)
+```
+
+
+```{r, echo=TRUE}
+##UMS 0.2: Separate auto-coders of Rpresent by Gender
+vi02 <- read.csv("Outputs/Other/Var-Imp_UMS0.2.csv")
+vi02 %>% 
+  mutate(across(-Measure, ~ rank(desc(.x))),
+         RankDiff = abs(Importance_Female - Importance_Male)) %>% 
+  arrange(desc(RankDiff))
+```
+
+</div>
+
+</details>
+
+## Normalization {#normal}
+
+This UMS controls for acoustic variability that could inadvertently signal gender---in this case, each token's minimum and maximum pitch.
+Unlike the other categories, this UMS transforms the data rather than removing rows or columns.
+
+
+<details>
+
+<summary>More info</summary>
+
+<div>
+
+In this dataset, formant timepoint measurements (e.g., `F3_50`, or F3 at 50% of the token's duration) had already been speaker-normalized as part of [data pre-processing](https://nzilbb.github.io/How-to-Train-Your-Classifier/How_to_Train_Your_Classifier.html#step-1).
+However, `F0min` and `F0max` (each token's minimum and maximum pitch) were not normalized.
+UMS 3.1 normalizes these measures by subtracting by-speaker averages of these measures for word-_initial_ /r/ tokens (see [`Input-Data/meanPitches.csv`](https://github.com/djvill/SLAC-Fairness/tree/main/Input-Data/meanPitches.csv)).
+
+
+Distributions of `F0min` and `F0max`, before normalization:
+
+```{r, fig.alt="A pair of histograms with distributions of raw F0 measurements (F0min and F0max). For both measurements, there are distinct modes for Female and Male distributions, with not much overlap."}
+trainingDataAll %>% 
+  select(Gender, F0min, F0max) %>% 
+  pivot_longer(c(F0min, F0max), names_to="Measure") %>% 
+  ggplot(aes(x=value, fill=Gender)) +
+  geom_histogram(binwidth=10, position="identity", alpha=0.5) +
+  facet_grid(Measure ~ ., labeller=label_both) +
+  xlab("Raw F0 (Hz)") +
+  theme_bw()
+```
+
+
+After normalization:
+
+```{r, fig.alt="A pair of histograms with distributions of normalized F0 measurements (F0min and F0max). For both measurements, Female and Male distributions are almost completely overlapping."}
+trainingDataAll %>% 
+  umsData("3.1", normFile="Input-Data/meanPitches.csv") %>% 
+  select(Gender, F0min, F0max) %>% 
+  pivot_longer(c(F0min, F0max), names_to="Measure") %>% 
+  ggplot(aes(x=value, fill=Gender)) +
+  geom_histogram(binwidth=10, position="identity", alpha=0.5) +
+  facet_grid(Measure ~ ., labeller=label_both) +
+  xlab("Normalized F0 (Hz)") +
+  theme_bw()
+```
+
+</div>
+
+</details>
+
+
+## Combinations of other strategies {#combo}
+
+These UMSs combine downsampling plus valid predictor selection or normalization.
+Refer to the relevant sections above for more info on the component UMSs.
+
+```{r}
+##Get relevant UMSs
+umsList %>% 
+  filter(UMS=="0.0" | startsWith(UMS, "4")) %>% 
+  ##Get dimensions
+  mutate(Data = map(UMS, ~ umsData(trainingDataAll, .x,
+                                  varimpDir="Outputs/Other/", 
+                                  normFile="Input-Data/meanPitches.csv") %>% 
+                     select(-c(Rpresent, Gender))),
+         `Num. tokens` = map_int(Data, nrow),
+         `Num. predictors` = map_int(Data, ncol)) %>% 
+  ##No longer need Data column
+  select(-Data) %>% 
+  scrollKable("height: 250px;")
+```
+
+
+
+# R session info
+
+```{r}
+sessionInfo()
+```
+
+
+
+<!-- Footer: Add CSS styling -->
+
+```{css, echo=FALSE}
+/* Add scrollbars to long R input/output blocks */
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Repo navigation block */
+div#repo-nav {
+  background-color: #ddd;
+  width: fit-content;
+  padding: 10px 20px;
+  border: 1px solid #bbb;
+  border-radius: 20px;
+}
+div#repo-nav * {
+  margin: 0px;
+  font-style: italic;
+}
+
+/* Add resizeable scrollbars to any arbitrary block */
+.scroll-block {
+  height: 400px;
+  overflow-y: auto;
+  resize: vertical;
+  margin-bottom: 10px;
+  /* Add border around block */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0px 5px;
+}
+
+/* Token distribution tables */
+.dist-table {
+  line-height: 1.1;
+  border: none;
+}
+/* Headers */
+.dist-table th {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+/* First col */
+.dist-table td:first-child, .dist-table th:first-child {
+  font-weight: bold;
+  border-right: 2px solid #ddd;
+}
+/* Sum col */
+.dist-table th:nth-child(4), .dist-table td:nth-child(4) {
+  font-weight: normal;
+  border-left: 0.67px solid #ddd;
+}
+/* Sum row */
+.dist-table tr:last-child td {
+  font-weight: normal;
+  border-top: 0.67px solid #ddd;
+}
+
+/* Details blocks */
+details > div {
+  padding-left: 12px;
+  margin-left: 10px;
+  border-left: 2px solid #aaa;
+  margin-bottom: 20px;
+}
+summary {
+  display: list-item;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 5px;
+  font-size: 1.25em;
+  font-style: italic;
+  color: #888;
+}
+```
