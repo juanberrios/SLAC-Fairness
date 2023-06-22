@@ -7,7 +7,7 @@ _Dan Villarreal (Department of Linguistics, University of Pittsburgh)_
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 
-## Introduction {#intro}
+## Introduction
 
 This GitHub repository is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
 In the paper, I investigate **sociolinguistic auto-coding (SLAC)** through the lens of **ML fairness**.
@@ -39,14 +39,14 @@ You can learn more about SLAC by reading the following resources.
 First, you can **reproduce** the analysis I performed for the _Linguistics Vanguard_ paper, using the same data and code that I did.
 Simply follow the analysis walkthrough [tutorial](Analysis-Walkthrough.html).
 
-Second, you can also [adapt this code](#adapt-code) to your own projects.
-You might want to use it if you want to (1) **assess fairness** for a [pre-existing auto-coder](#adapt-RQ2) and/or (2) create a **fair auto-coder** by [testing unfairness mitigation strategies](#adapt-RQ3) on your data.
+Second, you can also [adapt this code](#adapting-this-code-to-your-own-projects) to your own projects.
+You might want to use it if you want to (1) **assess fairness** for a [pre-existing auto-coder](#assessing-fairness-for-a-pre-existing-auto-coder) and/or (2) create a **fair auto-coder** by [testing unfairness mitigation strategies](#testing-unfairness-mitigation-strategies) on your data.
 
-Finally, I invite [comments, critiques, and questions](#audit-code) about this code.
+Finally, I invite [comments, critiques, and questions](#auditing-this-code-to-critique-andor-suggest-changes) about this code.
 I've made this code available for transparency's sake, so please don't hesitate to reach out!
 
 
-## What's in this repository? {#repo-contents}
+## What's in this repository?
 
 The files in this repository fall into a few categories.
 Click the links below to jump to the relevant subsection:
@@ -62,15 +62,17 @@ Click the links below to jump to the relevant subsection:
 - [Code that does stuff](#code)
   - `R-Scripts/`
   - `Shell-Scripts/`
-- [Code/info pertaining to the repository itself](#meta-code)
+- [Code/info pertaining to the repository itself](#codeinfo-pertaining-to-the-repository-itself)
   - `.gitignore`
-  - `renv/`
   - `LICENSE.md`
+  - `renv/`
+  - `renv.lock`
+  - `.Rprofile`
 
 You can browse files [here](https://github.com/djvill/SLAC-Fairness).
 
 
-### A quick note on the two-computer setup {#repo-two-computer}
+### A quick note on the two-computer setup
 
 This repository's structure reflects the two-computer setup I used to run this analysis.
 I generated and measured auto-coders on a more powerful system that is not quite as user-friendly (Pitt's [CRC](https://crc.pitt.edu/)), then analyzed the metrics on my less-powerful-but-user-friendlier laptop.
@@ -79,7 +81,7 @@ the code [will take longer to run](Analysis-Walkthrough.html#running-time) on a 
 In the rest of this section, I'll refer to this two-computer split several times.
 
 
-### Input data {#input-data}
+### Input data
 
 Contents:
 
@@ -94,7 +96,7 @@ The New Zealand Institute of Language, Brain and Behaviour maintains a corpus of
 This corpus is hosted in an instance of [LaBB-CAT](https://labbcat.canterbury.ac.nz/);
 the data files were downloaded from LaBB-CAT, with subsequent data-wrangling in R (including speaker anonymization).
 
-_Skip ahead for info on using your own [auto-coder](#adapt-RQ2) and [training data](#adapt-data), or modifying the set of [UMSs](#adapt-ums)._
+_Skip ahead for info on using your own [auto-coder](#assessing-fairness-for-a-pre-existing-auto-coder) and [training data](#using-your-own-training-data), or modifying the set of [UMSs](#adding-andor-subtracting-umss)._
 
 
 ### Outputs
@@ -103,12 +105,12 @@ Contents:
 
 - `Outputs/`
   - `Autocoders-to-Keep/`
-    - "Final" auto-coders (saved as `.Rds` files). Unlike the temporary auto-coders, this folder is version-controlled (see [info on `.gitignore`](#meta-code)), so it's useful for selectively saving auto-coders we want to hold onto.
+    - "Final" auto-coders (saved as `.Rds` files). Unlike the temporary auto-coders, this folder is version-controlled (see [info on `.gitignore`](#codeinfo-pertaining-to-the-repository-itself)), so it's useful for selectively saving auto-coders we want to hold onto.
   - `Shell-Scripts/`
-    - Text files (saved with the `.out` file extension) that record any output of [shell scripts](#code-shell-scripts), including errors. Useful for diagnosing issues with the code if something goes wrong.
+    - Text files (saved with the `.out` file extension) that record any output of [shell scripts](#shell-scripts), including errors. Useful for diagnosing issues with the code if something goes wrong.
   - `Performance/`
-    - Tabular data (saved as `.csv` files) with metrics of auto-coders' performance (e.g., overall accuracy) and fairness (e.g., accuracy for women's vs. men's tokens). These files bridge the [two-computer split](#repo-two-computer) split: we extract metrics on a more powerful system (see [walkthrough](Analysis-Walkthrough.html#baseline-metrics)) so we can analyze them on a user-friendlier computer.
-  - `Diagnostic-Files/`: Temporary files that are useful only in the moment (e.g., peeking "under the hood" to diagnose a code issue if something goes wrong) and/or too large to [share between computers](#repo-two-computer). Most files are [`.gitignore`d](#meta-code), save for empty `dummy_file`s that exist only so the [empty folders can be shared to GitHub](https://stackoverflow.com/a/8418403).
+    - Tabular data (saved as `.csv` files) with metrics of auto-coders' performance (e.g., overall accuracy) and fairness (e.g., accuracy for women's vs. men's tokens). These files bridge the [two-computer split](#a-quick-note-on-the-two-computer-setup) split: we extract metrics on a more powerful system (see [walkthrough](Analysis-Walkthrough.html#baseline-metrics)) so we can analyze them on a user-friendlier computer.
+  - `Diagnostic-Files/`: Temporary files that are useful only in the moment (e.g., peeking "under the hood" to diagnose a code issue if something goes wrong) and/or too large to [share between computers](#a-quick-note-on-the-two-computer-setup). Most files are [`.gitignore`d](#codeinfo-pertaining-to-the-repository-itself), save for empty `dummy_file`s that exist only so the [empty folders can be shared to GitHub](https://stackoverflow.com/a/8418403).
     - `Model-Status/`
       - Temporary files (with extension `.tmp`) that are created during [optimization for performance](Analysis-Walkthrough.html#baseline) to signal which auto-coders are completed or running.
     - `Temp-Autocoders/`
@@ -140,7 +142,7 @@ You also have the option of foregoing the shell scripts and running the R script
 
 
 
-#### R scripts {#code-r-scripts}
+#### R scripts
 
 These include 'main scripts' that run auto-coders and 'helper scripts' that define functionality shared among the main scripts.
 
@@ -152,7 +154,7 @@ Main scripts:
   - `Outlier-Dropping.R`: Subjects an auto-coder to [outlier dropping](https://nzilbb.github.io/How-to-Train-Your-Classifier/How_to_Train_Your_Classifier.html#step-5), one stage of optimizing an auto-coder for performance.
 
 The main scripts are written to be called from a command-line client like Bash, using the command `Rscript`.
-(To use `Rscript`, R needs to be in your [PATH](#run-code).)
+(To use `Rscript`, R needs to be in your [PATH](#running-this-code-on-your-own-machine).)
 For example, if you navigate Bash to `R-Scripts/`, you can run `Rscript Run-UMS.R --ums 0.0`
 These scripts take several arguments (like `--ums`);
 to see arguments, run `Rscript <script-name> --help` from the command line.
@@ -171,7 +173,7 @@ Helper scripts:
   - `Session-Info.R`: Combines and prints R session info from the outputs of multiple scripts. Meant to be used in shell scripts.
 
 
-#### Shell scripts {#code-shell-scripts}
+#### Shell scripts
 
 Contents:
 
@@ -198,19 +200,22 @@ CRC's cluster uses [Lmod](http://lmod.readthedocs.org) to make modules (like R) 
 Your system may not need to load modules explicitly, or may use different commands to load R.
 
 
-### Code/info pertaining to the repository itself {#meta-code}
+### Code/info pertaining to the repository itself
 
 Contents:
 
-- `.gitignore`: Tells Git which files/folders to exclude from being version-controlled (and being shared to GitHub or [between computers](#repo-two-computer)). Because the auto-coders are huge files, I exclude `Outputs/Diagnostic-Files/Temp-Autocoders/` from version-control and just [pull out fairness/performance data](Analysis-Walkthrough.html#baseline-measure) instead. If there's any I want to keep, I save them to the non-ignored folder `Outputs/Autocoders-to-Keep/`.
-- `renv/`: Set up by the [`renv/` package](https://cran.r-project.org/package=renv) to ensure our code behaves the same regardless of package updates.
+- `.gitignore`: Tells Git which files/folders to exclude from being version-controlled (and being shared to GitHub or [between computers](#a-quick-note-on-the-two-computer-setup)). Because the auto-coders are huge files, I exclude `Outputs/Diagnostic-Files/Temp-Autocoders/` from version-control and just [pull out fairness/performance data](Analysis-Walkthrough.html#baseline-measure) instead. If there's any I want to keep, I save them to the non-ignored folder `Outputs/Autocoders-to-Keep/`.
 - `LICENSE.md`: Tells you what you're permitted to do with this code.
+- `renv/`: Set up by the [`renv` package](https://cran.r-project.org/package=renv) to ensure our code behaves the same regardless of package updates.
+- `renv.lock`: Set up by `renv` to store [info about package versions](https://cran.r-project.org/web/packages/renv/vignettes/lockfile.html).
+- `.Rprofile`: Set up by `renv`
 
 
 
-## Running this code on your own machine {#run-code}
+## Running this code on your own machine
 
 To run this code on your own machine, you'll need a suitable computing environment and software.
+All required and recommended software is free and open-source.
 This document was originally run using high-performance computing resources provided by the University of Pittsburgh's [Center for Research Computing (CRC)](https://crc.pitt.edu/), in particular its [shared memory parallel cluster](https://crc.pitt.edu/resources/h2p-user-guide/node-configuration).
 You _can_ run this code on a normal desktop or laptop---it just might take a while!
 You'll also need at least 2.5 Gb of disk space free.
@@ -239,9 +244,11 @@ Required software:
   - These packages will install dependencies that you don't need to install directly. See full R session info [here](Analysis-Walkthrough.html#R-session-info)
 - The command-line client [Bash](https://www.gnu.org/software/bash/) (v. >= 5.0.0)
   - If you install Git (recommended), Bash is included in the install
+- The document converter [Pandoc](https://pandoc.org/) (v. >= 2.19)
+  - Automatically installed with `rmarkdown`
 
 Please note that R and its packages are continually updated, so in the future the code may not work as expected (or at all!).
-If you hit a brick wall, don't hesitate to [reach out](#audit-code)!
+If you hit a brick wall, don't hesitate to [reach out](#auditing-this-code-to-critique-andor-suggest-changes)!
 
 
 I also recommend using Git and GitHub to create your own shareable version of the code; 
@@ -254,7 +261,7 @@ In particular:
 1. [Fork this repository](https://github.com/djvill/SLAC-Fairness/fork) (keep the same repository name), and clone it onto your computer.
 1. Test out the code on your own system: Edit the code, create commits, push your commits to your remote fork.
     - You may want to create a 'clean' version of the repository without any of the [generated outputs](#outputs), to see if your system replicates my outputs.
-1. [Reach out](#audit-code)!
+1. [Reach out](#auditing-this-code-to-critique-andor-suggest-changes)!
 
 
 Finally, I recommend using the integrated development environment [RStudio](https://www.rstudio.com/products/rstudio/download/).
@@ -262,7 +269,7 @@ While it doesn't change how the code in this repository works, RStudio makes R c
 
 
 
-## Adapting this code to your own projects {#adapt-code}
+## Adapting this code to your own projects
 
 How much you want to adapt this code is really up to you.
 You might want to 'carbon-copy' this analysis on your own project, but in all likelihood your project will dictate that you make some changes to better fit your project's needs.
@@ -273,19 +280,20 @@ for example, this code only handles fairness across two groups, and it only hand
 
 Below, you can read about:
 
-- Assessing fairness for a [pre-existing auto-coder](#adapt-RQ2)
-- Creating a fair auto-coder by [testing unfairness mitigation strategies](#adapt-RQ3)
-  - Using your own [training data](#adapt-data)
-  - Adding and/or subtracting [UMSs](#adapt-ums)
+- Assessing fairness for a [pre-existing auto-coder](#assessing-fairness-for-a-pre-existing-auto-coder)
+- Creating a fair auto-coder by [testing unfairness mitigation strategies](#testing-unfairness-mitigation-strategies)
+  - Using your own [training data](#using-your-own-training-data)
+  - Adding and/or subtracting [UMSs](#adding-andor-subtracting-umss)
 
 
 In addition, I strongly recommend making the data you use for this task publicly available if possible, since open data helps advance science (see Villarreal & Collister "Open methods in linguistics", in press for Oxford collection _Decolonizing linguistics_).
 However, if you do so, make sure what you share conforms to the ethics/IRB agreement(s) in place when the data was collected (if applicable).
 
-Finally, if there's anything in this code that you can't figure out or isn't working for you, please **don't hesitate to [reach out](#audit-code)!**
+Finally, if there's anything in this code that you can't figure out or isn't working for you, please **don't hesitate to [reach out](#auditing-this-code-to-critique-andor-suggest-changes)!**
+Please note that there is no warranty for this code.
 
 
-### Assessing fairness for a pre-existing auto-coder {#adapt-RQ2}
+### Assessing fairness for a pre-existing auto-coder
 
 This is one possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ2](Analysis-Walkthrough.html#RQ2).
 To analyze your auto-coder, it needs to have been generated by `caret::train()`.
@@ -299,12 +307,12 @@ If your auto-coder conforms to these requirements, you can use functions from `R
 See the [walkthrough](Analysis-Walkthrough.html#rq2-ums-utils) for examples of how to use this code.
 
 
-### Testing unfairness mitigation strategies {#adapt-RQ3}
+### Testing unfairness mitigation strategies
 
 This is the other possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ3](Analysis-Walkthrough.html#RQ3).
 
 
-#### Using your own training data {#adapt-data}
+#### Using your own training data
 
 You'll need your own training data (in place of `trainingData.Rds`), and you may need normalization data depending on which UMSs you want to try.
 
@@ -341,7 +349,7 @@ Some of these pertain to the [data preprocessing step in "How to train"](https:/
 - You may want to anonymize your speakers, especially if you choose to make your data open, as in `trainingData.Rds`, but this is strictly optional.
 
 
-Finally, as a general note, you may have to tweak the [R scripts](#code-r-scripts) a little bit to accommodate your data.
+Finally, as a general note, you may have to tweak the [R scripts](#r-scripts) a little bit to accommodate your data.
 For example:
 
 - These scripts assume the training data file is an `.Rds` file. If it's a `.csv`, you'll have to tweak the code
@@ -351,7 +359,7 @@ For example:
 - If you rename or reorganize folders or files, you'll need to change the code to account for that.
 
 
-#### Adding and/or subtracting UMSs {#adapt-ums}
+#### Adding and/or subtracting UMSs
 
 Depending on your groups, your predictor set, and/or your dependent variable, you might want to add or subtract UMSs.
 For example, if you already have equal token counts for women vs. men, UMS 1.1 (downsample men to equalize token counts by gender) wouldn't apply.
@@ -379,7 +387,7 @@ However, `umsData()` actually translates this into "downsample one of the classe
 Try plugging your data into `umsData()` to see whether the existing code affects your data the way you expect.
 
 
-## Auditing this code to critique and/or suggest changes {#audit-code}
+## Auditing this code to critique and/or suggest changes
 
 Readers are more than welcome to critique this code!
 While I think much of this code is pretty solid, there are no doubt some bugs here and there, some inefficient code implementations, and/or some tortured data-scientific reasoning.
