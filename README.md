@@ -235,6 +235,7 @@ Required software:
   - `lubridate` (v. >= 1.8.0)
   - `rmarkdown` (v. >= 2.14)
   - `knitr` (v. >= 1.39)
+  - `renv` (v. >= 0.16.0)
   - These packages will install dependencies that you don't need to install directly. See full R session info [here](Analysis-Walkthrough.html#R-session-info)
 - The command-line client [Bash](https://www.gnu.org/software/bash/) (v. >= 5.0.0)
   - If you install Git (recommended), Bash is included in the install

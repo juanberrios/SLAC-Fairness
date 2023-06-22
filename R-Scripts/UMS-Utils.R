@@ -62,7 +62,7 @@ umsData <- function(data,
                     normFile="../Input-Data/meanPitches.csv", 
                     umsTxt="../Input-Data/UMS-List.txt") {
   # Implement strategies ------------------------------------------------------
-  silent_library("dplyr")
+  suppressWarnings(suppressMessages(library(dplyr)))
   ##Subroutine for core UMS functionality
   implementUMS <- function(x, UMS) {
     ##If not normalizing, drop Speaker column (if it exists)
@@ -301,7 +301,7 @@ umsData <- function(data,
     if (startsWith(UMS, "2")) {
       if (startsWith(UMS, "2.1")) {
         ##Load purrr
-        silent_library("purrr")
+        suppressWarnings(suppressMessages(library(purrr)))
         
         ##Get precursor file listings
         fileStem <- if_else(grepl("2\\.1\\.[1-3]", UMS), "0.1.1", "0.2")
@@ -366,7 +366,7 @@ umsData <- function(data,
               pluck("finalModel", "variable.importance") %>% 
               {tibble(Measure=names(.), Importance=.)}
           } else if (fileStem == "0.2") {
-            silent_library("tidyr")
+            suppressWarnings(suppressMessages(library(tidyr)))
             varImpCls <- 
               readRDS(predFiles$Cls) %>% 
               map_dfr(~ .x %>% 
@@ -584,7 +584,7 @@ umsFormula <- function(data,
                        ##  - [feature2]_Outlier - ..." to formula?
                        outlierCols=FALSE,
                        umsTxt="../Input-Data/UMS-List.txt") {
-  silent_library("dplyr")
+  suppressWarnings(suppressMessages(library(dplyr)))
   
   ##Validate columns
   stopIfNoCol(data, {{dependent}}, "dependent", "data")
@@ -652,7 +652,7 @@ umsTuneGrid <- function(strategy,
       )
       ##If no path, attempt to parse
     } else {
-      silent_library("dplyr") ##In case tuneGrid uses tibble()
+      suppressWarnings(suppressMessages(library(dplyr))) ##In case tuneGrid uses tibble()
       tryCatch(tuneGrid <- eval(str2expression(tuneGrid)),
                error = function(e) {
                  stop("tune-grid incorrectly specified (see below)\n", 
@@ -717,11 +717,11 @@ umsSummaryFunc <- function(strategy,
 ##Dependent = Rpresent
 summaryRpresent <- function(data, lev=NULL, model=NULL, obsCol="obs", 
                             returnDF=FALSE) {
-  silent_library("ROCR")
-  silent_library("dplyr")
-  silent_library("tidyr")
-  silent_library("purrr")
-  silent_library("magrittr")
+  suppressWarnings(suppressMessages(library(ROCR)))
+  suppressWarnings(suppressMessages(library(dplyr)))
+  suppressWarnings(suppressMessages(library(tidyr)))
+  suppressWarnings(suppressMessages(library(purrr)))
+  suppressWarnings(suppressMessages(library(magrittr)))
   
   if (!is.null(obsCol) && obsCol!="obs") {
     data <- data %>% rename("obs" = obsCol)
@@ -775,11 +775,11 @@ summaryRpresent <- function(data, lev=NULL, model=NULL, obsCol="obs",
 ##Dependent = Gender
 summaryGender <- function(data, lev=NULL, model=NULL, obsCol="obs", 
                           returnDF=FALSE) {
-  silent_library("ROCR")
-  silent_library("dplyr")
-  silent_library("tidyr")
-  silent_library("purrr")
-  silent_library("magrittr")
+  suppressWarnings(suppressMessages(library(ROCR)))
+  suppressWarnings(suppressMessages(library(dplyr)))
+  suppressWarnings(suppressMessages(library(tidyr)))
+  suppressWarnings(suppressMessages(library(purrr)))
+  suppressWarnings(suppressMessages(library(magrittr)))
   
   if (!is.null(obsCol) && obsCol!="obs") {
     data <- data %>% rename("obs" = obsCol)
@@ -870,8 +870,8 @@ cls_fairness <- function(x,
                          group=Gender,
                          cutoffBy=c("Resample","Gender"),
                          unResample=TRUE) {
-  silent_library("dplyr")
-  silent_library("rlang")
+  suppressWarnings(suppressMessages(library(dplyr)))
+  suppressWarnings(suppressMessages(library(rlang)))
   
   # Subroutine: Get predictions dataframe -------------------------------------
   getPred <- function(cls) {
@@ -945,8 +945,8 @@ cls_fairness <- function(x,
              "x$pred")
       }
       
-      silent_library("ROCR")
-      silent_library("purrr")
+      suppressWarnings(suppressMessages(library(ROCR)))
+      suppressWarnings(suppressMessages(library(purrr)))
       
       ##Calculate best cutoffs for each group
       cutoffs <- 
@@ -1014,7 +1014,7 @@ cls_fairness <- function(x,
   
   ##If output is dataframe, get df
   if (output=="dataframe") {
-    silent_library("tidyr")
+    suppressWarnings(suppressMessages(library(tidyr)))
     
     ##Optionally calculate accuracy by class
     if (!byClass) {
@@ -1066,7 +1066,7 @@ cls_fairness <- function(x,
       ##Calculate and return chisq test
       chisq <- prop.test(hitMiss) 
     } else {
-      silent_library("purrr")
+      suppressWarnings(suppressMessages(library(purrr)))
       
       ##Get list of hit/miss matrices
       hitMiss <-
@@ -1106,7 +1106,7 @@ cls_fairness <- function(x,
   
   ##If output is cm, return confusion matrix
   if (output=="cm") {
-    silent_library("purrr")
+    suppressWarnings(suppressMessages(library(purrr)))
     
     cm <-
       pred %>% 
@@ -1142,9 +1142,9 @@ cls_summary <- function(x,
                         refGroup="Female", 
                         cutoffBy=c("Resample","Gender"),
                         unResample=TRUE) {
-  silent_library("dplyr")
-  silent_library("tidyr")
-  silent_library("purrr")
+  suppressWarnings(suppressMessages(library(dplyr)))
+  suppressWarnings(suppressMessages(library(tidyr)))
+  suppressWarnings(suppressMessages(library(purrr)))
   
   ##Check x class
   if (!any(c("train", "pred") %in% class(x))) {
@@ -1234,7 +1234,7 @@ printData <- function(data,
   stopIfNoCol(data, {{excludeCols}}, "excludeCols", "data")
   
   ##Print counts 
-  silent_library("dplyr")
+  suppressWarnings(suppressMessages(library(dplyr)))
   dataSmall <- data %>% 
     select(-{{excludeCols}})
   tableDepGp <- data %>% 
@@ -1294,15 +1294,9 @@ printHeaderUMS <- function(strategy, umsTxt="../Input-Data/UMS-List.txt", ...) {
 
 # Meta-utilities --------------------------------------------------------------
 
-##Load package without messages/warnings
-silent_library <- function(x) {
-  stopifnot(is.character(x))
-  suppressWarnings(suppressMessages(library(x, character.only=TRUE)))
-}
-
 ##Check that umsTxt path exists in working dir (using script dir as fallback)
 umsPath <- function(umsTxt) {
-  silent_library("this.path")
+  suppressWarnings(suppressMessages(library(this.path)))
   scriptDir <- this.dir()
   relPath <- path.join(scriptDir, umsTxt)
   if (file.exists(umsTxt)) {
@@ -1343,8 +1337,8 @@ umsValidate <- function(strategy, umsTxt) {
 
 ##Helper function to check existence of columns (using tidyselect semantics)
 stopIfNoCol <- function(data, checkCol, colLabel, datLabel="training data") {
-  silent_library("dplyr")
-  silent_library("rlang")
+  suppressWarnings(suppressMessages(library(dplyr)))
+  suppressWarnings(suppressMessages(library(rlang)))
   tryCatch(data %>% select({{checkCol}}),
            error = function(e) stop(colLabel, " argument (", 
                                     as_name(enquo(checkCol)),
