@@ -17,9 +17,10 @@ As a result, I attempt **unfairness mitigation strategies (UMSs)** as techniques
 
 **_Repository navigation:_**
 
+- [_Repository homepage_](https://djvill.github.io/SLAC-Fairness)
 - [_Repository code_](https://github.com/djvill/SLAC-Fairness)
-- [_Analysis walkthrough_](Analysis-Walkthrough.html)
-- [_Unfairness mitigation strategy descriptions_](UMS-Info)
+- [_Analysis walkthrough_](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough)
+- [_Unfairness mitigation strategy descriptions_](https://djvill.github.io/SLAC-Fairness/UMS-Info)
 
 
 ### If you're new to sociolinguistic auto-coding (SLAC)
@@ -37,7 +38,7 @@ You can learn more about SLAC by reading the following resources.
 ## What's the point of this repository?
 
 First, you can **reproduce** the analysis I performed for the _Linguistics Vanguard_ paper, using the same data and code that I did.
-Simply follow the analysis walkthrough [tutorial](Analysis-Walkthrough.html).
+Simply follow the analysis walkthrough [tutorial](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html).
 
 Second, you can also [adapt this code](#adapting-this-code-to-your-own-projects) to your own projects.
 You might want to use it if you want to (1) **assess fairness** for a [pre-existing auto-coder](#assessing-fairness-for-a-pre-existing-auto-coder) and/or (2) create a **fair auto-coder** by [testing unfairness mitigation strategies](#testing-unfairness-mitigation-strategies) on your data.
@@ -77,7 +78,7 @@ You can browse files [here](https://github.com/djvill/SLAC-Fairness).
 This repository's structure reflects the two-computer setup I used to run this analysis.
 I generated and measured auto-coders on a more powerful system that is not quite as user-friendly (Pitt's [CRC](https://crc.pitt.edu/)), then analyzed the metrics on my less-powerful-but-user-friendlier laptop.
 (It's perfectly fine to use a one-computer setup if you don't have access to high-performance computing;
-the code [will take longer to run](Analysis-Walkthrough.html#running-time) on a less-powerful machine, but it still might be faster/easier than the HPC learning curve!)
+the code [will take longer to run](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#running-time) on a less-powerful machine, but it still might be faster/easier than the HPC learning curve!)
 In the rest of this section, I'll refer to this two-computer split several times.
 
 
@@ -109,14 +110,14 @@ Contents:
   - `Shell-Scripts/`
     - Text files (saved with the `.out` file extension) that record any output of [shell scripts](#shell-scripts), including errors. Useful for diagnosing issues with the code if something goes wrong.
   - `Performance/`
-    - Tabular data (saved as `.csv` files) with metrics of auto-coders' performance (e.g., overall accuracy) and fairness (e.g., accuracy for women's vs. men's tokens). These files bridge the [two-computer split](#a-quick-note-on-the-two-computer-setup) split: we extract metrics on a more powerful system (see [walkthrough](Analysis-Walkthrough.html#baseline-metrics)) so we can analyze them on a user-friendlier computer.
+    - Tabular data (saved as `.csv` files) with metrics of auto-coders' performance (e.g., overall accuracy) and fairness (e.g., accuracy for women's vs. men's tokens). These files bridge the [two-computer split](#a-quick-note-on-the-two-computer-setup) split: we extract metrics on a more powerful system (see [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline-metrics)) so we can analyze them on a user-friendlier computer.
   - `Diagnostic-Files/`: Temporary files that are useful only in the moment (e.g., peeking "under the hood" to diagnose a code issue if something goes wrong) and/or too large to [share between computers](#a-quick-note-on-the-two-computer-setup). Most files are [`.gitignore`d](#codeinfo-pertaining-to-the-repository-itself), save for empty `dummy_file`s that exist only so the [empty folders can be shared to GitHub](https://stackoverflow.com/a/8418403).
     - `Model-Status/`
-      - Temporary files (with extension `.tmp`) that are created during [optimization for performance](Analysis-Walkthrough.html#baseline) to signal which auto-coders are completed or running.
+      - Temporary files (with extension `.tmp`) that are created during [optimization for performance](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline) to signal which auto-coders are completed or running.
     - `Temp-Autocoders/`
       - Auto-coders run with different UMSs, for which we want to measure performance and fairness but we don't need to version-control
   - `Other/`: Files mostly meant for passing info between scripts
-    - `Var-Imp*.csv`: Data on variable importance for ["precursor" UMSs](Analysis-Walkthrough.html#meas-precursor) used for UMSs 2.1.x.
+    - `Var-Imp*.csv`: Data on variable importance for ["precursor" UMSs](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#meas-precursor) used for UMSs 2.1.x.
     - `Best-Params*.csv`: Optimal hyperparameters from [hyperparameter-tuning](https://nzilbb.github.io/How-to-Train-Your-Classifier/How_to_Train_Your_Classifier.html#step-4) runs.
     - `Drop-Log*.csv`: Log files for [outlier-dropping](https://nzilbb.github.io/How-to-Train-Your-Classifier/How_to_Train_Your_Classifier.html#step-5) runs.
 
@@ -179,13 +180,13 @@ Contents:
 
 - `Shell-Scripts/`
   - `Run-UMS.sh`: Generates a single auto-coder according to a UMS, and optionally optimizes it for performance. This flexible lower-level script is useful for exploratory analysis.
-  - `Baseline.sh`: Wrapper script that calls `Run-UMS.sh` for [baseline auto-coder](Analysis-Walkthrough.html#baseline) (mostly exists to override the default [outfile](#outputs) name)
+  - `Baseline.sh`: Wrapper script that calls `Run-UMS.sh` for [baseline auto-coder](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline) (mostly exists to override the default [outfile](#outputs) name)
   - `UMS-Round1.sh`: Generates auto-coders according to UMSs whose codes start with 0, 1, 2, or 3 (save for UMS 0.0, the baseline).
   - `UMS-Round2.sh`: Generates auto-coders according to UMSs whose codes start with 4.
 
 The shell scripts are written to be called from Bash, using the commands `bash` (to run directly) or `sbatch` (to submit to a Slurm job queue; [see above](#code)).
 For example, if you navigate Bash to `Shell-Scripts/`, you can run `sbatch Baseline.sh`.
-`Run-UMS.sh` takes two arguments: a UMS numerical code (e.g., `sbatch Run-UMS.sh 4.2.1`) and an optional `-o` flag to [optimize the auto-coder for performance](Analysis-Walkthrough.html#baseline).
+`Run-UMS.sh` takes two arguments: a UMS numerical code (e.g., `sbatch Run-UMS.sh 4.2.1`) and an optional `-o` flag to [optimize the auto-coder for performance](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline).
 All other shell scripts hard-code these options (as well as other options passed to the R scripts), but these can be adjusted as needed (under the heading `##EDITABLE PARAMETERS`).
 
 
@@ -204,7 +205,7 @@ Your system may not need to load modules explicitly, or may use different comman
 
 Contents:
 
-- `.gitignore`: Tells Git which files/folders to exclude from being version-controlled (and being shared to GitHub or [between computers](#a-quick-note-on-the-two-computer-setup)). Because the auto-coders are huge files, I exclude `Outputs/Diagnostic-Files/Temp-Autocoders/` from version-control and just [pull out fairness/performance data](Analysis-Walkthrough.html#baseline-measure) instead. If there's any I want to keep, I save them to the non-ignored folder `Outputs/Autocoders-to-Keep/`.
+- `.gitignore`: Tells Git which files/folders to exclude from being version-controlled (and being shared to GitHub or [between computers](#a-quick-note-on-the-two-computer-setup)). Because the auto-coders are huge files, I exclude `Outputs/Diagnostic-Files/Temp-Autocoders/` from version-control and just [pull out fairness/performance data](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline-measure) instead. If there's any I want to keep, I save them to the non-ignored folder `Outputs/Autocoders-to-Keep/`.
 - `LICENSE.md`: Tells you what you're permitted to do with this code.
 - `renv/`: Set up by the [`renv` package](https://cran.r-project.org/package=renv) to ensure our code behaves the same regardless of package updates.
 - `renv.lock`: Set up by `renv` to store [info about package versions](https://cran.r-project.org/web/packages/renv/vignettes/lockfile.html).
@@ -219,7 +220,7 @@ All required and recommended software is free and open-source.
 This document was originally run using high-performance computing resources provided by the University of Pittsburgh's [Center for Research Computing (CRC)](https://crc.pitt.edu/), in particular its [shared memory parallel cluster](https://crc.pitt.edu/resources/h2p-user-guide/node-configuration).
 You _can_ run this code on a normal desktop or laptop---it just might take a while!
 You'll also need at least 2.5 Gb of disk space free.
-See the [walkthrough](Analysis-Walkthrough.html#script-info) for more information about machine specs, running time, and disk space used.
+See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#script-info) for more information about machine specs, running time, and disk space used.
 
 
 Required software:
@@ -241,7 +242,7 @@ Required software:
   - `rmarkdown` (v. >= 2.14)
   - `knitr` (v. >= 1.39)
   - `renv` (v. >= 0.16.0)
-  - These packages will install dependencies that you don't need to install directly. See full R session info [here](Analysis-Walkthrough.html#R-session-info)
+  - These packages will install dependencies that you don't need to install directly. See full R session info [here](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#R-session-info)
 - The command-line client [Bash](https://www.gnu.org/software/bash/) (v. >= 5.0.0)
   - If you install Git (recommended), Bash is included in the install
 - The document converter [Pandoc](https://pandoc.org/) (v. >= 2.19)
@@ -295,7 +296,7 @@ Please note that there is no warranty for this code.
 
 ### Assessing fairness for a pre-existing auto-coder
 
-This is one possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ2](Analysis-Walkthrough.html#RQ2).
+This is one possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ2](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#RQ2).
 To analyze your auto-coder, it needs to have been generated by `caret::train()`.
 The auto-coder's `trainingData` element also needs a column with group data (e.g., which tokens belong to female vs. male speakers).
 If you use the scripts in this repository, that's taken care of for you; 
@@ -304,12 +305,12 @@ However, if you didn't use these scripts to run your auto-coder, you'll need to 
 
 
 If your auto-coder conforms to these requirements, you can use functions from `R-Scripts/UMS-Utils.R` to analyze fairness.
-See the [walkthrough](Analysis-Walkthrough.html#rq2-ums-utils) for examples of how to use this code.
+See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#rq2-ums-utils) for examples of how to use this code.
 
 
 ### Testing unfairness mitigation strategies
 
-This is the other possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ3](Analysis-Walkthrough.html#RQ3).
+This is the other possible goal of your analysis, mirroring the _Linguistics Vanguard_ paper's [RQ3](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#RQ3).
 
 
 #### Using your own training data
@@ -367,7 +368,7 @@ For example, if you already have equal token counts for women vs. men, UMS 1.1 (
 
 To add a new UMS:
 
-1. Pick a new [UMS code](UMS-Info.html#ums-codes)
+1. Pick a new [UMS code](https://djvill.github.io/SLAC-Fairness/UMS-Info.html#ums-codes)
     - Don't use a code that's already been defined (it just creates unnecessary complications)
     - If it's a combination UMS, the code should start with `4`
 1. Add the code and description to `Input-Data/UMS-List.txt`
