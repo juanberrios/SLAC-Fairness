@@ -10,7 +10,7 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 ## Introduction
 
 This GitHub repository is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
-In the paper, I investigate **sociolinguistic auto-coding (SLAC)** through the lens of **ML fairness**.
+In the paper, I investigate **sociolinguistic auto-coding (SLAC)** through the lens of **machine-learning fairness**.
 Just as some algorithms produce biased predictions by _overlearning_ group characteristics, I find that the same is true for SLAC.
 As a result, I attempt **unfairness mitigation strategies (UMSs)** as techniques for removing gender bias in auto-coding predictions (without harming overall auto-coding performance too badly).
 
