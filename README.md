@@ -225,7 +225,7 @@ See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthroug
 
 Required software:
 
-- The statistical computing language [R](https://cloud.r-project.org/) (version >= 4.3.1)
+- The statistical computing language [R](https://cloud.r-project.org/) (version >= 4.3.0)
   - Since these scripts call R from the command line, R must be in your PATH (directions for [Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0), [macOS](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg), [Unix](https://unix.stackexchange.com/a/26059)). If R is in your PATH, then at the command line `Rscript -e R.version.string` will print your R version.
 - R packages:
   - `tidyverse` (v. >= 2.0.0)
@@ -238,7 +238,6 @@ Required software:
   - `optparse` (v. >= 1.7.3)
   - `this.path` (v. >= 1.4.0.13, install via `remotes::install_github("ArcadeAntics/this.path", "5d755e1")`)
   - `benchmarkme` (v. >= 1.0.8)
-  - `lubridate` (v. >= 1.9.2)
   - `rmarkdown` (v. >= 2.22)
   - `knitr` (v. >= 1.43)
   - `renv` (v. >= 0.17.3)
@@ -288,6 +287,7 @@ If you're using R 4.3.x (the version used for this code), run `renv::update()`;
 if R >= 4.4, run `renv::init()` and select option 2.
 To update renv itself, run `renv::upgrade()`.
 Of course, the code may not work as expected thanks to changes to the packages it relies on.
+If you're satisfied with how the code runs, you can register the updated versions with `renv::snapshot()`.
 
 
 If you want to use a package that's not registered with `renv`, use `renv::record()`.
