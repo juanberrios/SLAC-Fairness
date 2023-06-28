@@ -237,14 +237,7 @@ bash UMS-Round1.sh &> ../Outputs/Shell-Scripts/UMS-Round1.out
 The following R code returns `TRUE` if the command `sbatch` will work on your system:
 
 ```{r}
-if (.Platform$OS.type=="windows") {
-  ans <- suppressWarnings(system2("where", "sbatch", TRUE))
-  length(ans) > 0 &&
-    (ans != "INFO: Could not find files for the given pattern(s).")
-} else if (.Platform$OS.type=="unix") {
-  ans <- suppressWarnings(system2("command", c("-v", "sbatch"), TRUE))
-  length(ans) != 0
-}
+unname(nchar(Sys.which("sbatch")) > 0)
 ```
 
 

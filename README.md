@@ -246,7 +246,7 @@ Required software:
 - The command-line client [Bash](https://www.gnu.org/software/bash/) (v. >= 5.0.0)
   - If you install Git (recommended), Bash is included in the install
 - The document converter [Pandoc](https://pandoc.org/) (v. >= 2.19)
-  - Automatically installed with `rmarkdown`
+  - If you install RStudio (recommended), Pandoc is included in the install
 
 Please note that R and its packages are continually updated, so in the future the code may not work as expected (or at all!).
 If you hit a brick wall, don't hesitate to [reach out](#auditing-this-code-to-critique-andor-suggest-changes)!
