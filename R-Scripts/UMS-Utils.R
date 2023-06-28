@@ -32,7 +32,7 @@
 ##                          should be set to TRUE. More info under each function
 ##  umsTxt      character   Path from this script to file with two tab-separated
 ##                          columns: UMS and Description
-## * See https://dplyr.tidyverse.org/articles/programming.html#tidy-selection
+## * See https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
 
 ##Prepare data for auto-coding: apply unfairness mitigation strategy, only keep 
 ##  necessary columns, and optionally drop outliers
@@ -951,7 +951,7 @@ cls_fairness <- function(x,
       ##Calculate best cutoffs for each group
       cutoffs <- 
         pred %>% 
-        group_by(across(!!cutoffBy)) %>% 
+        group_by(pick(!!cutoffBy)) %>% 
         group_modify(~ with(.x, prediction(ProbOfProbClass, Actual)) %>% 
                        performance(measure="acc") %>%
                        ##Pull out Accuracy and Cutoff as a dataframe

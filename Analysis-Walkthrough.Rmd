@@ -33,7 +33,6 @@ library(knitr)        # combine text, code, and code output
 library(ggrepel)      # repel plot labels
 library(rPref)        # Pareto analysis
 library(benchmarkme)  # get_cpu(), get_ram()
-library(lubridate)    # format durations
 
 ##Don't show column types for read_csv()
 options(readr.show_col_types = FALSE)
@@ -176,11 +175,11 @@ chiCols <-
   pivot_wider()
 
 ##Join together & recode Metric w/ nicer labels
+recodeMetric <- c("Overall accuracy" = "Acc", 
+                  "Absent class accuracy" = "ClassAcc_Absent",
+                  "Present class accuracy" = "ClassAcc_Present")
 left_join(fmDiff, chiCols, by="Metric") %>% 
-  mutate(across(Metric, fct_recode, 
-                "Overall accuracy" = "Acc", 
-                "Absent class accuracy" = "ClassAcc_Absent",
-                "Present class accuracy" = "ClassAcc_Present"))
+  mutate(across(Metric, ~ fct_recode(.x, !!!recodeMetric)))
 ```
 
 
@@ -194,9 +193,7 @@ LabPhonPred <-
   ##Get counts of each token's Rpresent votes (plus tokens' unique Gender values)
   count(rowIndex, Gender, Rpresent = Predicted) %>% 
   ##Only take most frequent prediction per token
-  group_by(rowIndex) %>%
-  slice_max(n) %>% 
-  ungroup()
+  slice_max(n, by=rowIndex)
 ##Put together table
 list(Actual = LabPhonClassifier$trainingData %>% 
        rename(Rpresent = .outcome), 
@@ -444,7 +441,7 @@ perfPlot_round1 <- perf_round1 %>%
   pivot_wider() %>%
   ##Add Category column, shorter Classifier label
   mutate(Category = recode_factor(str_extract(Classifier, "\\d"), !!!categories),
-         across(Classifier, str_remove, "UMS"))
+         across(Classifier, ~ str_remove(.x, "UMS")))
 ```
 
 
@@ -577,7 +574,7 @@ perfPlot_round2 <- perf_round2 %>%
   pivot_wider() %>%
   ##Add Category column, shorter Classifier label
   mutate(Category = recode_factor(str_extract(Classifier, "\\d"), !!!categories),
-         across(Classifier, str_remove, "UMS"))
+         across(Classifier, ~ str_remove(.x, "UMS")))
 ```
 
 
@@ -725,14 +722,13 @@ this is _definitely_ not a guaranteed outcome!
 ##Get fairest UMS for each Metric
 perfPlot %>% 
   mutate(across(Fairness, abs)) %>% 
-  group_by(Metric) %>% 
+  group_by(Metric) %>%
   filter(Fairness==min(Fairness))
 ##Could also do
-# perfPlot %>% 
-#   mutate(across(Fairness, abs)) %>% 
-#   group_by(Metric) %>% 
-#   group_modify(~ psel(.x, low(Fairness))) %>% 
-#   ungroup()
+# perfPlot %>%
+#   mutate(across(Fairness, abs)) %>%
+#   group_by(Metric) %>%
+#   group_modify(~ psel(.x, low(Fairness))) 
 ```
 
 
