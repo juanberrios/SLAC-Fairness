@@ -138,6 +138,12 @@ Rpresent  Female Male  Sum
   Absent    1504 1504 3008
   Present    284  284  568
   Sum       1788 1788 3576
+Proportionally by Gender:
+         Gender
+Rpresent     Female      Male
+  Absent  0.8411633 0.8411633
+  Present 0.1588367 0.1588367
+  Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.4.Rds
@@ -334,18 +340,18 @@ loaded via a namespace (and not attached):
                                 JOB STATISTICS                                
 ==============================================================================
 
-           JobId: 9535037
-      SubmitTime: 2023-06-20T12:55:55
-         EndTime: 2023-06-20T13:55:56
-         RunTime: 00:12:32
+           JobId: 9626172
+      SubmitTime: 2023-06-28T10:25:02
+         EndTime: 2023-06-28T11:25:04
+         RunTime: 00:13:57
             TRES: cpu=12,mem=48216M,node=1,billing=9
        Partition: smp
-        NodeList: smp-n23
+        NodeList: smp-n37
          Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/UMS-Round1.sh
 
 ==============================================================================
  For more information use the command:
-   - `sacct -M smp -j 9535037 -S 2023-06-20T12:55:55 -E 2023-06-20T13:55:56`
+   - `sacct -M smp -j 9626172 -S 2023-06-28T10:25:02 -E 2023-06-28T11:25:04`
 
  To control the output of the above command:
    - Add `--format=<field1,field2,etc>` with fields of interest

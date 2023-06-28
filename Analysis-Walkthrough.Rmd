@@ -10,7 +10,7 @@ output:
     df_print: paged
     code_folding: show
 params:
-  extract_meas: FALSE 
+  extract_meas: TRUE 
   extract_only_meas: FALSE 
 ---
 
@@ -760,10 +760,11 @@ Temporary auto-coders:
 tmpAuto <- 
   list.files("Outputs/Diagnostic-Files/Temp-Autocoders/", 
              # "^(Run-UMS|(Hyperparam-Tuning|Outlier-Dropping)_UMS0\\.0).*Rds$") %>%
-             "^Run-UMS.*Rds$") %>%
+             "^Run-UMS.*Rds$", full.names=TRUE) %>%
   file.info()
-cat("Disk space: ", round(sum(tmpAuto$size)/2^30, 1), " Gb (",
-    nrow(tmpAuto), " files)")
+# cat("Disk space: ", round(sum(tmpAuto$size)/2^30, 1), " Gb (",
+cat("Disk space: ", round(sum(tmpAuto$size)/2^20, 1), " Mb (",
+    nrow(tmpAuto), " files)", sep="")
 ```
 
 
