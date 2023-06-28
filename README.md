@@ -207,9 +207,9 @@ Contents:
 
 - `.gitignore`: Tells Git which files/folders to exclude from being version-controlled (and being shared to GitHub or [between computers](#a-quick-note-on-the-two-computer-setup)). Because the auto-coders are huge files, I exclude `Outputs/Diagnostic-Files/Temp-Autocoders/` from version-control and just [pull out fairness/performance data](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#baseline-measure) instead. If there's any I want to keep, I save them to the non-ignored folder `Outputs/Autocoders-to-Keep/`.
 - `LICENSE.md`: Tells you what you're permitted to do with this code.
-- `renv/`: Set up by the [`renv` package](https://cran.r-project.org/package=renv) to ensure our code behaves the same regardless of package updates.
-- `renv.lock`: Set up by `renv` to store [info about package versions](https://cran.r-project.org/web/packages/renv/vignettes/lockfile.html).
-- `.Rprofile`: Set up by `renv`
+- `renv/`: Set up by the [`renv` package](https://rstudio.github.io/renv/) to ensure our code behaves the same regardless of package updates. See more info [below](#renv).
+- `renv.lock`: Set up by `renv` to store [info about package versions](https://rstudio.github.io/renv/articles/lockfile.html).
+- `.Rprofile`: Contains R code to run at the start of any R session in this repository. In this case, this code was set up by `renv` to run a script that loads the package versions recorded in `renv.lock`. If you want to disable `renv`, simply delete this file.
 
 
 
@@ -219,7 +219,7 @@ To run this code on your own machine, you'll need a suitable computing environme
 All required and recommended software is free and open-source.
 This document was originally run using high-performance computing resources provided by the University of Pittsburgh's [Center for Research Computing (CRC)](https://crc.pitt.edu/), in particular its [shared memory parallel cluster](https://crc.pitt.edu/resources/h2p-user-guide/node-configuration).
 You _can_ run this code on a normal desktop or laptop---it just might take a while!
-You'll also need at least 2.5 Gb of disk space free.
+You'll also need at least 400 Mb of disk space free.
 See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#script-info) for more information about machine specs, running time, and disk space used.
 
 
@@ -267,6 +267,34 @@ In particular:
 
 Finally, I recommend using the integrated development environment [RStudio](https://www.rstudio.com/products/rstudio/download/).
 While it doesn't change how the code in this repository works, RStudio makes R code easier to understand, write, edit, and debug.
+
+
+### `renv`
+
+This repository uses the [`renv`](https://rstudio.github.io/renv/) package to ensure that updates to R packages don't break the code.
+In effect, `renv` freezes your environment in time by preserving the package versions the code was originally run on.
+This is great from a reproducibility perspective, but it entails some extra machinery before you can run the code.
+For all the examples below, you need to load this repo in R or RStudio by setting your working directory somewhere inside the repo.
+
+
+Before you can run any of this code, run `renv::restore()`.
+This will download the packages at the correct versions to an `renv` cache on your system.
+Then you should be able to run this code on your machine.
+
+
+Of course, using old versions of these packages means you won't be able to benefit to any package updates since this repo was published.
+If you want to use new package versions, you have to register them with `renv`.
+If you're using R 4.3.x (the version used for this code), run `renv::update()`;
+if R >= 4.4, run `renv::init()` and select option 2.
+To update renv itself, run `renv::upgrade()`.
+Of course, the code may not work as expected thanks to changes to the packages it relies on.
+
+
+If you want to use a package that's not registered with `renv`, use `renv::record()`.
+
+
+Finally, if you're finding this all too much of a hassle, you can skip using `renv` altogether;
+just delete `.Rprofile` and restart R/RStudio.
 
 
 
@@ -375,7 +403,7 @@ To add a new UMS:
 1. Modify `umsData()` in `R-Scripts/UMS-Utils.R`
     - Single UMSs: Add a new `} else if (UMS=="<new-UMS>") {` block to the `implementUMS()` subroutine
     - Combination UMSs: Add code to interpret the second & third digits near the bottom of `umsData()`
-    - Note that `umsData()` uses [`tidyselect` semantics](https://dplyr.tidyverse.org/articles/programming.html#tidy-selection) for several arguments (`dependent`, `group`, `predictors`, & `dropCols`). If you're using any of these column names in a `dplyr` function, wrap them in double-braces (e.g., `data %>% select({{dependent}}, {{group}})`); if you need a column name as a string, use the deparse-substitute trick (e.g., `depName <- deparse(substitute(dependent))`)
+    - Note that `umsData()` uses [`tidyselect` semantics](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html) for several arguments (`dependent`, `group`, `predictors`, & `dropCols`). If you're using any of these column names in a `dplyr` function, wrap them in double-braces (e.g., `data %>% select({{dependent}}, {{group}})`); if you need a column name as a string, use the deparse-substitute trick (e.g., `depName <- deparse(substitute(dependent))`)
 1. If using a shell script to run multiple UMSs in a single round, edit the script so the UMS code is matched by the `pattern` regex and not by `excl` (e.g., to include UMS 5.1, use `pattern=^[0-35]`)
 
 You only need to subtract a UMS explicitly if you're using a shell script to run multiple UMSs in a single round.
