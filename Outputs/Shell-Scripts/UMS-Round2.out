@@ -183,12 +183,12 @@ Saving classifier as Run-UMS_UMS4.4.2.Rds
 --------------------------------------------------------------------------------
 Session info
 --------------------------------------------------------------------------------
-R version 4.2.0 (2022-04-22)
+R version 4.3.0 (2023-04-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Red Hat Enterprise Linux
 
 Matrix products: default
-BLAS:   /usr/lib64/libblas.so.3.4.2
+BLAS:   /usr/lib64/libblas.so.3.4.2 
 LAPACK: /usr/lib64/liblapack.so.3.4.2
 
 locale:
@@ -199,51 +199,53 @@ locale:
  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
+time zone: America/New_York
+tzcode source: system (glibc)
+
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] this.path_1.0.0 dplyr_1.0.10    rlang_1.0.6     purrr_0.3.5    
- [5] caret_6.0-92    lattice_0.20-45 ggplot2_3.3.6   ROCR_1.0-11    
- [9] tidyr_1.2.1     magrittr_2.0.3  optparse_1.7.3 
+ [1] this.path_1.4.0.13 dplyr_1.1.2        rlang_1.1.1        purrr_1.0.1       
+ [5] caret_6.0-94       lattice_0.21-8     ggplot2_3.4.2      ranger_0.15.1     
+ [9] ROCR_1.0-11        tidyr_1.3.0        magrittr_2.0.3     optparse_1.7.3    
 
 loaded via a namespace (and not attached):
- [1] tidyselect_1.2.0     reshape2_1.4.4       listenv_0.8.0       
- [4] splines_4.2.0        colorspace_2.0-3     vctrs_0.4.1         
- [7] generics_0.1.3       stats4_4.2.0         getopt_1.20.3       
-[10] utf8_1.2.2           survival_3.3-1       prodlim_2019.11.13  
-[13] ModelMetrics_1.2.2.2 pillar_1.8.1         glue_1.6.2          
-[16] withr_2.5.0          DBI_1.1.3            foreach_1.5.2       
-[19] lifecycle_1.0.1      plyr_1.8.8           lava_1.6.10         
-[22] stringr_1.4.1        timeDate_3043.102    munsell_0.5.0       
-[25] gtable_0.3.1         future_1.29.0        recipes_0.2.0       
-[28] codetools_0.2-18     parallel_4.2.0       class_7.3-20        
-[31] fansi_1.0.3          Rcpp_1.0.9           scales_1.2.1        
-[34] ipred_0.9-12         parallelly_1.32.1    digest_0.6.30       
-[37] stringi_1.7.8        grid_4.2.0           hardhat_0.2.0       
-[40] cli_3.4.1            tools_4.2.0          tibble_3.1.8        
-[43] future.apply_1.10.0  pkgconfig_2.0.3      MASS_7.3-57         
-[46] Matrix_1.5-3         data.table_1.14.6    pROC_1.18.0         
-[49] lubridate_1.8.0      gower_1.0.0          assertthat_0.2.1    
-[52] iterators_1.0.14     R6_2.5.1             globals_0.16.2      
-[55] rpart_4.1.16         nnet_7.3-17          nlme_3.1-157        
-[58] compiler_4.2.0      
+ [1] utf8_1.2.3           future_1.32.0        generics_0.1.3      
+ [4] class_7.3-21         stringi_1.7.12       pROC_1.18.0         
+ [7] listenv_0.9.0        digest_0.6.31        timechange_0.2.0    
+[10] grid_4.3.0           iterators_1.0.14     foreach_1.5.2       
+[13] plyr_1.8.8           Matrix_1.5-4         ModelMetrics_1.2.2.2
+[16] nnet_7.3-18          survival_3.5-5       fansi_1.0.4         
+[19] scales_1.2.1         codetools_0.2-19     getopt_1.20.3       
+[22] lava_1.7.2.1         cli_3.6.1            hardhat_1.3.0       
+[25] parallelly_1.35.0    future.apply_1.10.0  munsell_0.5.0       
+[28] splines_4.3.0        withr_2.5.0          prodlim_2023.03.31  
+[31] tools_4.3.0          parallel_4.3.0       reshape2_1.4.4      
+[34] colorspace_2.1-0     recipes_1.0.6        globals_0.16.2      
+[37] vctrs_0.6.2          R6_2.5.1             rpart_4.1.19        
+[40] stats4_4.3.0         lubridate_1.9.2      lifecycle_1.0.3     
+[43] stringr_1.5.0        MASS_7.3-59          pkgconfig_2.0.3     
+[46] pillar_1.9.0         gtable_0.3.3         glue_1.6.2          
+[49] data.table_1.14.8    Rcpp_1.0.10          tibble_3.2.1        
+[52] tidyselect_1.2.0     nlme_3.1-162         ipred_0.9-14        
+[55] timeDate_4022.108    gower_1.0.1          compiler_4.3.0      
 ==============================================================================
                                 JOB STATISTICS                                
 ==============================================================================
 
-           JobId: 9626188
-      SubmitTime: 2023-06-28T10:28:10
-         EndTime: 2023-06-28T11:28:10
-         RunTime: 00:07:32
+           JobId: 9626808
+      SubmitTime: 2023-06-28T14:22:33
+         EndTime: 2023-06-28T15:22:34
+         RunTime: 00:07:34
             TRES: cpu=12,mem=48216M,node=1,billing=9
        Partition: smp
-        NodeList: smp-n40
+        NodeList: smp-n51
          Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/UMS-Round2.sh
 
 ==============================================================================
  For more information use the command:
-   - `sacct -M smp -j 9626188 -S 2023-06-28T10:28:10 -E 2023-06-28T11:28:10`
+   - `sacct -M smp -j 9626808 -S 2023-06-28T14:22:33 -E 2023-06-28T15:22:34`
 
  To control the output of the above command:
    - Add `--format=<field1,field2,etc>` with fields of interest

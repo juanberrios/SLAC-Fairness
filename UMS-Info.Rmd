@@ -48,7 +48,7 @@ trainingDataAll <-
   filter(HowCoded=="Hand")
 ```
 
-```{r, echo=FALSE, fig.alt="Creative Commons Shield: BY-NC-SA", fig.link="http://creativecommons.org/licenses/by-nc-sa/4.0/"}
+```{r, include=FALSE, fig.alt="Creative Commons Shield: BY-NC-SA", fig.link="http://creativecommons.org/licenses/by-nc-sa/4.0/"}
 include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
 ```
 
