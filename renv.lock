@@ -1571,6 +1571,11 @@
       ],
       "Hash": "690bc058ea2b1b8a407d3cfe3dce3ef9"
     },
+    "ranger": {
+      "Package": "ranger",
+      "Version": "0.15.1",
+      "Source": "Repository"
+    },
     "rappdirs": {
       "Package": "rappdirs",
       "Version": "0.3.3",

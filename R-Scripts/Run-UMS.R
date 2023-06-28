@@ -64,6 +64,7 @@ clsSummaryFunc <- umsSummaryFunc(strategy)
 
 ##Run classifier
 suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(ranger))
 cat("Running classifier...", fill=TRUE)
 set.seed(seed)
 ##Separate for UMS 0.2

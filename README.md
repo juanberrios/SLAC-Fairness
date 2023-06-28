@@ -225,23 +225,23 @@ See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthroug
 
 Required software:
 
-- The statistical computing language [R](https://cloud.r-project.org/) (version >=4.2.0)
+- The statistical computing language [R](https://cloud.r-project.org/) (version >= 4.3.1)
   - Since these scripts call R from the command line, R must be in your PATH (directions for [Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0), [macOS](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg), [Unix](https://unix.stackexchange.com/a/26059)). If R is in your PATH, then at the command line `Rscript -e R.version.string` will print your R version.
 - R packages:
-  - `tidyverse` (v. >= 1.3.2)
+  - `tidyverse` (v. >= 2.0.0)
   - `magrittr` (v. >= 2.0.3)
-  - `caret` (v. >= 6.0.92)
-  - `ranger` (v. >= 0.13.1)
-  - `ROCR` (v. >= 1.0.11)
+  - `caret` (v. >= 6.0-94)
+  - `ranger` (v. >= 0.15.1)
+  - `ROCR` (v. >= 1.0-11)
   - `foreach` (v. >= 1.5.2)
   - `doParallel` (v. >= 1.0.17)
   - `optparse` (v. >= 1.7.3)
-  - `this.path` (v. >= 1.4.0.8, install via `remotes::install_github("ArcadeAntics/this.path", "1326106")`)
-  - `benchmarkme` (v. >= 1.0.7)
-  - `lubridate` (v. >= 1.8.0)
-  - `rmarkdown` (v. >= 2.14)
-  - `knitr` (v. >= 1.39)
-  - `renv` (v. >= 0.16.0)
+  - `this.path` (v. >= 1.4.0.13, install via `remotes::install_github("ArcadeAntics/this.path", "5d755e1")`)
+  - `benchmarkme` (v. >= 1.0.8)
+  - `lubridate` (v. >= 1.9.2)
+  - `rmarkdown` (v. >= 2.22)
+  - `knitr` (v. >= 1.43)
+  - `renv` (v. >= 0.17.3)
   - These packages will install dependencies that you don't need to install directly. See full R session info [here](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough.html#R-session-info)
 - The command-line client [Bash](https://www.gnu.org/software/bash/) (v. >= 5.0.0)
   - If you install Git (recommended), Bash is included in the install
