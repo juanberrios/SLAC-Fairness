@@ -37,7 +37,7 @@ printf "Running $numums strategies"
 printf "$sep"
 
 ##Load modules (if using Lmod)
-if command -v module &> /dev/null ; then module load gcc/10.2.0 r/4.2.0 ; fi
+if command -v module &> /dev/null ; then module load gcc/12.2.0 r/4.3.0 ; fi
 
 ##Run files (loop over umslist)
 for ums in $umslist ; do 
