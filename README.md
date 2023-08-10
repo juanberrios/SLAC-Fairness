@@ -236,7 +236,7 @@ Required software:
   - `foreach` (v. >= 1.5.2)
   - `doParallel` (v. >= 1.0.17)
   - `optparse` (v. >= 1.7.3)
-  - `this.path` (v. >= 1.4.0.13, install via `remotes::install_github("ArcadeAntics/this.path", "5d755e1")`)
+  - `this.path` (v. >= 2.0.0) 
   - `benchmarkme` (v. >= 1.0.8)
   - `rmarkdown` (v. >= 2.22)
   - `knitr` (v. >= 1.43)
