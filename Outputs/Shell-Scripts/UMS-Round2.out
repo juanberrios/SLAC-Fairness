@@ -234,18 +234,18 @@ loaded via a namespace (and not attached):
                                 JOB STATISTICS                                
 ==============================================================================
 
-           JobId: 9626808
-      SubmitTime: 2023-06-28T14:22:33
-         EndTime: 2023-06-28T15:22:34
-         RunTime: 00:07:34
+           JobId: 10235515
+      SubmitTime: 2023-08-10T17:32:02
+         EndTime: 2023-08-10T18:32:03
+         RunTime: 00:06:48
             TRES: cpu=12,mem=48216M,node=1,billing=9
        Partition: smp
-        NodeList: smp-n51
+        NodeList: smp-n43
          Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/UMS-Round2.sh
 
 ==============================================================================
  For more information use the command:
-   - `sacct -M smp -j 9626808 -S 2023-06-28T14:22:33 -E 2023-06-28T15:22:34`
+   - `sacct -M smp -j 10235515 -S 2023-08-10T17:32:02 -E 2023-08-10T18:32:03`
 
  To control the output of the above command:
    - Add `--format=<field1,field2,etc>` with fields of interest

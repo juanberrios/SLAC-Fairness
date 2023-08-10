@@ -73,18 +73,18 @@ loaded via a namespace (and not attached):
                                 JOB STATISTICS                                
 ==============================================================================
 
-           JobId: 9626805
-      SubmitTime: 2023-06-28T14:19:37
-         EndTime: 2023-06-28T15:19:38
-         RunTime: 00:01:20
+           JobId: 10235067
+      SubmitTime: 2023-08-10T17:21:44
+         EndTime: 2023-08-10T18:21:46
+         RunTime: 00:01:21
             TRES: cpu=12,mem=48216M,node=1,billing=9
        Partition: smp
-        NodeList: smp-n49
+        NodeList: smp-n41
          Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/Baseline.sh
 
 ==============================================================================
  For more information use the command:
-   - `sacct -M smp -j 9626805 -S 2023-06-28T14:19:37 -E 2023-06-28T15:19:38`
+   - `sacct -M smp -j 10235067 -S 2023-08-10T17:21:44 -E 2023-08-10T18:21:46`
 
  To control the output of the above command:
    - Add `--format=<field1,field2,etc>` with fields of interest
