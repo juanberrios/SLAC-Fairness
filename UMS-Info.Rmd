@@ -8,8 +8,8 @@ output:
     number_sections: yes
     df_print: paged
     code_folding: show
-		includes:
-			in_header: _includes/head-custom.html
+    includes:
+      in_header: "_includes/head-custom.html"
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
