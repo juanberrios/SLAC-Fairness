@@ -9,6 +9,8 @@ output:
     number_sections: yes
     df_print: paged
     code_folding: show
+		includes:
+			in_header: _includes/head-custom.html
 params:
   extract_metrics: TRUE 
   extract_only_metrics: FALSE 

@@ -69,6 +69,7 @@ Click the links below to jump to the relevant subsection:
   - `renv/`
   - `renv.lock`
   - `.Rprofile`
+	- `_includes/`
 
 You can browse files [here](https://github.com/djvill/SLAC-Fairness).
 
@@ -210,7 +211,7 @@ Contents:
 - `renv/`: Set up by the [`renv` package](https://rstudio.github.io/renv/) to ensure our code behaves the same regardless of package updates. See more info [below](#renv).
 - `renv.lock`: Set up by `renv` to store [info about package versions](https://rstudio.github.io/renv/articles/lockfile.html).
 - `.Rprofile`: Contains R code to run at the start of any R session in this repository. In this case, this code was set up by `renv` to run a script that loads the package versions recorded in `renv.lock`. If you want to disable `renv`, simply delete this file.
-
+- `_includes/`: Contains code that is inserted into the `<head>` element of this site's webpages, which uses [GitHub Pages](https://pages.github.com/) and the [Jekyll](https://jekyllrb.com/) theme [Primer](https://github.com/pages-themes/primer) to render the site. This is not necessary for any of the code's core functionality.
 
 
 ## Running this code on your own machine
@@ -226,7 +227,8 @@ See the [walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthroug
 Required software:
 
 - The statistical computing language [R](https://cloud.r-project.org/) (version >= 4.3.0)
-  - Since these scripts call R from the command line, R must be in your PATH (directions for [Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0), [macOS](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg), [Unix](https://unix.stackexchange.com/a/26059)). If R is in your PATH, then at the command line `Rscript -e R.version.string` will print your R version.
+  - Since these scripts call R from the command line, R must be in your PATH (directions for [Windows](https://info201.github.io/r-intro#windows-command-line), [macOS](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg), [Unix](https://unix.stackexchange.com/a/26059))
+		- To check, run `Rscript -e R.version.string` at the command line. If you see your R version, then R is in your path; if you get the error `Rscript: command not found`, R is not.
 - R packages:
   - `tidyverse` (v. >= 2.0.0)
   - `magrittr` (v. >= 2.0.3)
