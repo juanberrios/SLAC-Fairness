@@ -69,7 +69,7 @@ Click the links below to jump to the relevant subsection:
   - `renv/`
   - `renv.lock`
   - `.Rprofile`
-	- `_includes/`
+  - `_includes/`
 
 You can browse files [here](https://github.com/djvill/SLAC-Fairness).
 
