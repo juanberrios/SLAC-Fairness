@@ -9,7 +9,7 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 ## Introduction
 
-This GitHub repository is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
+This GitHub repository is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", published open-access in _Linguistics Vanguard_ in 2024: https://doi.org/10.1515/lingvan-2022-0114.
 In the paper, I investigate **sociolinguistic auto-coding (SLAC)** through the lens of **machine-learning fairness**.
 Just as some algorithms produce biased predictions by _overlearning_ group characteristics, I find that the same is true for SLAC.
 As a result, I attempt **unfairness mitigation strategies (UMSs)** as techniques for removing gender bias in auto-coding predictions (without harming overall auto-coding performance too badly).
@@ -425,6 +425,15 @@ While I think much of this code is pretty solid, there are no doubt some bugs he
 You can [raise GitHub issues](https://github.com/djvill/SLAC-Fairness/issues), [start discussions](https://github.com/djvill/SLAC-Fairness/discussions), or [send me an email](mailto:d.vill@pitt.edu?subject=[SLAC-Fairness]%20Auditing%20code).
 
 **Please don't be afraid to suggest changes, report bugs, or ask questions---I want this code to be useful for you, and there are no bad questions!**
+
+
+## Citing this repository
+
+If you use this repository, **please cite it**!
+Studies show that research [software](https://doi.org/10.1002/asi.23538) and [data](https://doi.org/10.1371/journal.pone.0136631) are under-cited, which makes it hard for contributors to gauge usage or get credit.
+Here's a recommended citation:
+
+> Villarreal, Dan. 2023. `SLAC-Fairness`: Tools to assess fairness and mitigate unfairness in sociolinguistic auto-coding. Available at https://djvill.github.io/SLAC-Fairness/.
 
 
 ## Acknowledgements
