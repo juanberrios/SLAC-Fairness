@@ -1,6 +1,6 @@
 ---
 title: Analysis walkthrough
-subtitle: "for the paper \"Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias\", forthcoming in _Linguistics Vanguard_"
+subtitle: "for the paper [Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias](https://doi.org/10.1515/lingvan-2022-0114) (_Linguistics Vanguard_, 2024)" 
 author: "Dan Villarreal (Department of Linguistics, University of Pittsburgh)"
 output:
   html_document:
@@ -47,7 +47,7 @@ include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
 
 # Introduction {#intro}
 
-This tutorial is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
+This tutorial is a companion to the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", published open-access in _Linguistics Vanguard_ in 2024: <https://doi.org/10.1515/lingvan-2022-0114>. 
 It walks readers through the process of running all the code to replicate the paper's analysis. 
 Check out the README for a higher-level overview of this repository and sociolinguistic auto-coding (_SLAC_) more generally.
 

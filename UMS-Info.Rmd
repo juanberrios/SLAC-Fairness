@@ -57,7 +57,7 @@ include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
 
 # Introduction
 
-This page contains descriptions of the **unfairness mitigation strategies** (UMSs) analyzed for the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", forthcoming in _Linguistics Vanguard_.
+This page contains descriptions of the **unfairness mitigation strategies** (UMSs) analyzed for the paper "Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias", published open-access in _Linguistics Vanguard_ in 2024: <https://doi.org/10.1515/lingvan-2022-0114>. 
 
 <div id="repo-nav">
 
