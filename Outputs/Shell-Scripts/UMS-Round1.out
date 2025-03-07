@@ -3,6 +3,8 @@
 Unfairness mitigation strategies: round 1
 Running 19 strategies
 ==============================================================================
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.1.1:
@@ -17,6 +19,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS0.1.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.1.2:
@@ -31,6 +35,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS0.1.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.1.3:
@@ -45,6 +51,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS0.1.3.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.2:
@@ -59,6 +67,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS0.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.1:
@@ -73,6 +83,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.2:
@@ -87,6 +99,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.3.1:
@@ -107,6 +121,8 @@ Rpresent     Female      Male
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.3.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.3.2:
@@ -127,6 +143,8 @@ Rpresent     Female      Male
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.3.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.4:
@@ -147,6 +165,8 @@ Rpresent     Female      Male
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.4.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.5:
@@ -161,6 +181,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.5.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.6:
@@ -175,6 +197,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS1.6.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.1:
@@ -189,6 +213,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.1.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.2:
@@ -203,6 +229,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.1.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.3:
@@ -217,6 +245,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.1.3.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.4:
@@ -231,6 +261,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.1.4.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.5:
@@ -245,6 +277,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.1.5.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.2:
@@ -259,6 +293,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.3:
@@ -273,6 +309,8 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS2.3.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 3.1:
@@ -287,75 +325,54 @@ Rpresent  Female Male  Sum
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS3.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Session info
 --------------------------------------------------------------------------------
-R version 4.3.0 (2023-04-21)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Red Hat Enterprise Linux
+R version 4.3.1 (2023-06-16 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
 
 Matrix products: default
-BLAS:   /usr/lib64/libblas.so.3.4.2 
-LAPACK: /usr/lib64/liblapack.so.3.4.2
+
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
- [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=en_US.UTF-8                  
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
 
-time zone: America/New_York
-tzcode source: system (glibc)
+time zone: America/Los_Angeles
+tzcode source: internal
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] this.path_1.4.0.13 dplyr_1.1.2        rlang_1.1.1        caret_6.0-94      
- [5] lattice_0.21-8     ggplot2_3.4.2      ranger_0.15.1      ROCR_1.0-11       
- [9] tidyr_1.3.0        purrr_1.0.1        magrittr_2.0.3     optparse_1.7.3    
+ [1] this.path_2.2.0 dplyr_1.1.3     rlang_1.1.1     caret_6.0-94   
+ [5] lattice_0.21-8  ggplot2_3.4.3   ranger_0.15.1   ROCR_1.0-11    
+ [9] tidyr_1.3.0     purrr_1.0.2     magrittr_2.0.3  optparse_1.7.5 
 
 loaded via a namespace (and not attached):
- [1] utf8_1.2.3           future_1.32.0        generics_0.1.3      
- [4] class_7.3-21         stringi_1.7.12       pROC_1.18.0         
- [7] listenv_0.9.0        digest_0.6.31        timechange_0.2.0    
-[10] grid_4.3.0           iterators_1.0.14     foreach_1.5.2       
-[13] plyr_1.8.8           Matrix_1.5-4         ModelMetrics_1.2.2.2
-[16] nnet_7.3-18          survival_3.5-5       fansi_1.0.4         
-[19] scales_1.2.1         codetools_0.2-19     getopt_1.20.3       
+ [1] utf8_1.2.3           future_1.33.0        generics_0.1.3      
+ [4] class_7.3-22         stringi_1.7.12       pROC_1.18.4         
+ [7] listenv_0.9.0        digest_0.6.33        timechange_0.2.0    
+[10] grid_4.3.1           iterators_1.0.14     foreach_1.5.2       
+[13] plyr_1.8.9           Matrix_1.5-4.1       ModelMetrics_1.2.2.2
+[16] nnet_7.3-19          survival_3.5-5       fansi_1.0.4         
+[19] scales_1.2.1         codetools_0.2-19     getopt_1.20.4       
 [22] lava_1.7.2.1         cli_3.6.1            hardhat_1.3.0       
-[25] parallelly_1.35.0    future.apply_1.10.0  munsell_0.5.0       
-[28] splines_4.3.0        withr_2.5.0          prodlim_2023.03.31  
-[31] tools_4.3.0          parallel_4.3.0       reshape2_1.4.4      
-[34] colorspace_2.1-0     recipes_1.0.6        globals_0.16.2      
-[37] vctrs_0.6.2          R6_2.5.1             rpart_4.1.19        
-[40] stats4_4.3.0         lubridate_1.9.2      lifecycle_1.0.3     
-[43] stringr_1.5.0        MASS_7.3-59          pkgconfig_2.0.3     
-[46] pillar_1.9.0         gtable_0.3.3         glue_1.6.2          
-[49] data.table_1.14.8    Rcpp_1.0.10          tibble_3.2.1        
+[25] parallelly_1.36.0    future.apply_1.11.0  munsell_0.5.0       
+[28] splines_4.3.1        withr_2.5.1          prodlim_2023.08.28  
+[31] tools_4.3.1          parallel_4.3.1       reshape2_1.4.4      
+[34] colorspace_2.1-0     recipes_1.0.8        globals_0.16.2      
+[37] vctrs_0.6.3          R6_2.5.1             rpart_4.1.19        
+[40] stats4_4.3.1         lubridate_1.9.3      lifecycle_1.0.3     
+[43] stringr_1.5.0        MASS_7.3-60          pkgconfig_2.0.3     
+[46] pillar_1.9.0         gtable_0.3.4         glue_1.6.2          
+[49] data.table_1.14.8    Rcpp_1.0.11          tibble_3.2.1        
 [52] tidyselect_1.2.0     nlme_3.1-162         ipred_0.9-14        
-[55] timeDate_4022.108    gower_1.0.1          compiler_4.3.0      
-==============================================================================
-                                JOB STATISTICS                                
-==============================================================================
-
-           JobId: 10235077
-      SubmitTime: 2023-08-10T17:23:02
-         EndTime: 2023-08-10T18:23:03
-         RunTime: 00:13:07
-            TRES: cpu=12,mem=48216M,node=1,billing=9
-       Partition: smp
-        NodeList: smp-n51
-         Command: /ihome/dvillarreal/dav49/SLAC-Fairness/Shell-Scripts/UMS-Round1.sh
-
-==============================================================================
- For more information use the command:
-   - `sacct -M smp -j 10235077 -S 2023-08-10T17:23:02 -E 2023-08-10T18:23:03`
-
- To control the output of the above command:
-   - Add `--format=<field1,field2,etc>` with fields of interest
-   - See the list of all possible fields by running: `sacct --helpformat`
-==============================================================================
+[55] timeDate_4022.108    gower_1.0.1          compiler_4.3.1      

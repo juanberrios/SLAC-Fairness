@@ -1,10 +1,10 @@
 ####
-#### Run-UMS.R: Generate an auto-coder according to an unfairness mitigation 
+#### Run-UMS.R: Generate an auto-coder according to an unfairness mitigation
 #### strategy
 ####
 #### For help, open a shell (terminal) in this directory and run:
 ####    Rscript Run-UMS.R --help
-#### 
+####
 
 ##Check working directory
 if (!endsWith(getwd(), "R-Scripts")) {
@@ -14,7 +14,7 @@ if (!endsWith(getwd(), "R-Scripts")) {
 # Parse command line arguments --------------------------------------------
 suppressPackageStartupMessages(library(optparse))
 source("Rscript-Opts.R")
-optionList <- c(commonOpts, 
+optionList <- c(commonOpts,
                 unlist(noncommonOpts$RunUMS),
                 unlist(noncommonOpts$RunUMSOutlierDropping))
 helptext <- paste0("   ", c(
@@ -39,11 +39,11 @@ dropCols <- opt$`drop-cols`
 
 ##Parse dropCols
 if (is.null(dropCols) || dropCols=="NULL") {
-  dropCols <- NULL 
+  dropCols <- NULL
 } else {
   if (file.exists(dropCols)) {
     dropCols <- readLines(dropCols)
-  } 
+  }
   dropCols <- strsplit(dropCols, ",")[[1]]
   dropCols <- dropCols[nchar(dropCols)>0]
 }
@@ -55,8 +55,8 @@ if (is.null(dropCols) || dropCols=="NULL") {
 source("UMS-Utils.R")
 printHeaderUMS(strategy)
 clsData <- readRDS(inputPath)
-clsData <- umsData(clsData[clsData$HowCoded=="Hand",], 
-                   strategy, dropCols=dropCols)
+#clsData <- umsData(clsData[clsData$HowCoded=="Hand",],
+#                   strategy, dropCols=dropCols)
 printData(clsData, strategy)
 clsForm <- umsFormula(clsData, strategy)
 clsTuneGrid <- umsTuneGrid(strategy, tuneGrid)
@@ -70,7 +70,7 @@ set.seed(seed)
 ##Separate for UMS 0.2
 if (strategy=="0.2") {
   ##Get group levels
-  gp <- clsData$Gender ##FYI: Modify if group isn't Gender
+  gp <- clsData$race ##FYI: Modify if group isn't race
   if (!is.factor(gp)) {
     gp <- factor(gp)
   }
