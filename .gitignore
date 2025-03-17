@@ -15,6 +15,9 @@ Outputs/Diagnostic-Files/Model-Status/
 # knitr and R markdown other cache directories
 *_files/
 
+# Input data while we work on preliminary versions of the notebook
+Input-Data/
+
 #### R ####
 ## From https://github.com/github/gitignore/blob/main/R.gitignore
 
