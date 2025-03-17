@@ -55,8 +55,7 @@ if (is.null(dropCols) || dropCols=="NULL") {
 source("UMS-Utils.R")
 printHeaderUMS(strategy)
 clsData <- readRDS(inputPath)
-#clsData <- umsData(clsData[clsData$HowCoded=="Hand",],
-#                   strategy, dropCols=dropCols)
+clsData <- umsData(clsData, strategy, dropCols=dropCols)
 printData(clsData, strategy)
 clsForm <- umsFormula(clsData, strategy)
 clsTuneGrid <- umsTuneGrid(strategy, tuneGrid)

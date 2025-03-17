@@ -24,7 +24,7 @@ umstxt=$(< ../Input-Data/UMS-List.txt)
 umslist=$(echo "$umstxt" | tail -n +2 | grep -oP ".+(?=\t)" | grep -P $pattern | grep -vP $excl)
 howmany() { echo $#; }
 numums=$(howmany $umslist)
-if [ $numums -eq 0 ]; then 
+if [ $numums -eq 0 ]; then
   echo No UMSs with pattern $pattern
   exit 1
 fi
@@ -40,7 +40,7 @@ printf "$sep"
 if command -v module &> /dev/null ; then module load gcc/12.2.0 r/4.3.0 ; fi
 
 ##Run files (loop over umslist)
-for ums in $umslist ; do 
+for ums in $umslist ; do
   Rscript Run-UMS.R --ums $ums --pkglist-path $ppath
 done
 

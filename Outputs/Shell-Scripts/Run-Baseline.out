@@ -1,23 +1,27 @@
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.0:
-  Baseline auto-coder of Rpresent, with all data and predictors
+  Baseline auto-coder of rpresent, with all data and predictors
 --------------------------------------------------------------------------------
-Data: 9284 tokens with 184 predictors
+Data: 9284 tokens with 174 predictors
          race
-Rpresent  black white  Sum
+rpresent  black white  Sum
   Absent    554  2877 3431
   Present  4380  1473 5853
   Sum      4934  4350 9284
 Proportionally by race:
          race
-Rpresent      black     white
+rpresent      black     white
   Absent  0.1122821 0.6613793
   Present 0.8877179 0.3386207
   Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS0.0.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
 Session info

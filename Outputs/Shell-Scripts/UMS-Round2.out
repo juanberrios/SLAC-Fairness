@@ -1,7 +1,7 @@
 
 ==============================================================================
 Unfairness mitigation strategies: round 2
-Running 8 strategies
+Running 2 strategies
 ==============================================================================
 Warning message:
 package 'optparse' was built under R version 4.3.3 
@@ -9,20 +9,20 @@ package 'optparse' was built under R version 4.3.3
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 4.1.1:
   Combination of:
-  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 10%)
-  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 10%)
+  - 1.3.1: Downsample white's Absent to equalize rpresent base rates by race
 --------------------------------------------------------------------------------
-Data: 4679 tokens with 162 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent     563 2548 3111
-  Present    284 1284 1568
-  Sum        847 3832 4679
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.6646989 0.6649269
-  Present 0.3353011 0.3350731
+Data: 6593 tokens with 157 predictors
+         race
+rpresent  black white  Sum
+  Absent    554   186  740
+  Present  4380  1473 5853
+  Sum      4934  1659 6593
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1122821 0.1121157
+  Present 0.8877179 0.8878843
   Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
@@ -33,168 +33,24 @@ package 'optparse' was built under R version 4.3.3
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 4.1.2:
   Combination of:
-  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of Gender (cutoff: top 10%)
-  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 10%)
+  - 1.3.2: Downsample black's Present to equalize rpresent base rates by race
 --------------------------------------------------------------------------------
-Data: 4817 tokens with 162 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent    1504 2548 4052
-  Present    284  481  765
-  Sum       1788 3029 4817
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.8411633 0.8412017
-  Present 0.1588367 0.1587983
+Data: 5188 tokens with 157 predictors
+         race
+rpresent  black white  Sum
+  Absent    554  2877 3431
+  Present   284  1473 1757
+  Sum       838  4350 5188
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.6610979 0.6613793
+  Present 0.3389021 0.3386207
   Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
 Saving classifier as Run-UMS_UMS4.1.2.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.2.1:
-  Combination of:
-  - 2.2: Theoretical predictor selection, removing all F0 measures
-  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4679 tokens with 176 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent     563 2548 3111
-  Present    284 1284 1568
-  Sum        847 3832 4679
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.6646989 0.6649269
-  Present 0.3353011 0.3350731
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.2.1.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.2.2:
-  Combination of:
-  - 2.2: Theoretical predictor selection, removing all F0 measures
-  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4817 tokens with 176 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent    1504 2548 4052
-  Present    284  481  765
-  Sum       1788 3029 4817
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.8411633 0.8412017
-  Present 0.1588367 0.1587983
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.2.2.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.3.1:
-  Combination of:
-  - 2.3: Empirical and theoretical predictor selection, removing only F0 measures that correlate with Gender
-  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4679 tokens with 178 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent     563 2548 3111
-  Present    284 1284 1568
-  Sum        847 3832 4679
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.6646989 0.6649269
-  Present 0.3353011 0.3350731
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.3.1.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.3.2:
-  Combination of:
-  - 2.3: Empirical and theoretical predictor selection, removing only F0 measures that correlate with Gender
-  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4817 tokens with 178 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent    1504 2548 4052
-  Present    284  481  765
-  Sum       1788 3029 4817
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.8411633 0.8412017
-  Present 0.1588367 0.1587983
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.3.2.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.4.1:
-  Combination of:
-  - 3.1: Normalize F0 by speaker
-  - 1.3.1: Downsample women's Absent to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4679 tokens with 180 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent     563 2548 3111
-  Present    284 1284 1568
-  Sum        847 3832 4679
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.6646989 0.6649269
-  Present 0.3353011 0.3350731
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.4.1.Rds
-Warning message:
-package 'optparse' was built under R version 4.3.3 
-
---------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.4.2:
-  Combination of:
-  - 3.1: Normalize F0 by speaker
-  - 1.3.2: Downsample men's Present to equalize Rpresent base rates by Gender
---------------------------------------------------------------------------------
-Data: 4817 tokens with 180 predictors
-         Gender
-Rpresent  Female Male  Sum
-  Absent    1504 2548 4052
-  Present    284  481  765
-  Sum       1788 3029 4817
-Proportionally by Gender:
-         Gender
-Rpresent     Female      Male
-  Absent  0.8411633 0.8412017
-  Present 0.1588367 0.1587983
-  Sum     1.0000000 1.0000000
-Running classifier...
-Classifier finished running
-Saving classifier as Run-UMS_UMS4.4.2.Rds
 Warning message:
 package 'optparse' was built under R version 4.3.3 
 

@@ -1,7 +1,7 @@
 ---
 title: Data analysis
 author: Juan Berríos, Dan Villareal
-date: "03/05/2025"
+date: "03/16/2025"
 output:
   html_document:
     toc: yes
@@ -36,12 +36,9 @@ library(ggrepel)      # repel plot labels
 library(rPref)        # Pareto analysis
 library(benchmarkme)  # get_cpu(), get_ram()
 
-##Don't show column types for read_csv()
-options(readr.show_col_types = FALSE)
-```
+##UMS functions
 
-```{r, include=FALSE, fig.alt="Creative Commons Shield: BY-NC-SA", fig.link="http://creativecommons.org/licenses/by-nc-sa/4.0/"}
-include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
+source("R-Scripts/UMS-Utils.R", keep.source=TRUE)
 ```
 
 # Introduction {#intro}
@@ -50,62 +47,48 @@ include_graphics("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
 
 
 ```{r}
-#Loading in classifier 
+##Read in data
 
+##Initial classifier
 fstInit <- readRDS("../Overlearning-Race-Classifier/Processed Data for Classifier/code/Model Status/fstInit.Rds")
+
+##Training data
+
+trainingData <- readRDS("../Overlearning-Race-Classifier/Processed Data for Classifier/code/Model Status/trainingData.Rds")
+
+##Pre-processing grouping columns as factor to prevent contrast errors
+
+trainingData <- trainingData %>% 
+  mutate(race = as.factor(race)) %>%
+  mutate(rpresent = as.factor(rpresent)) 
+
+##Save data for use by R scripts
+
+saveRDS(trainingData, file = "Input-Data/trainingData.Rds")
 ```
-
-```{r}
-#Extracting training data
-
-
-fstInit$trainingData %>%
-  rename(Rpresent = .outcome) %>%        #Renaming outcome variable so that it matches R script
-  saveRDS("Input-Data/trainingData.Rds")
-```
-
-```{r}
-#Loading UMS functions
-
-source("R-Scripts/UMS-Utils.R", keep.source=TRUE)
-```
-
 
 # Mitigating SLAC unfairness
-
 
 - In this section, we attempt to produce an auto-coder that does not suffer from the fairness issues previously identified. To do this, we run and analyze additional auto-coders under different unfairness mitigation strategies (UMSs). Read more about UMSs in 
 the paper [Sociolinguistic auto-coding has fairness problems too: Measuring and mitigating overlearning bias (Linguistics Vanguard, 2024)](https://www.degruyter.com/document/doi/10.1515/lingvan-2022-0114/html) and the [sample Analysis Walkthrough](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough#2_RQ2:_Assessing_fairness_for_SLAC). 
 
-## Generating auto-coders
-
-- To generate auto-coders, we will use the Bash command-line client to run shell scripts. You can submit jobs directly using the command `bash`. You should indicate the directory  where script outputs & errors should go in bash, as in the example below.
-
-```{bash, eval=FALSE}
-# Assuming you are in Shell-Scripts working directory
-bash UMS-Round1.sh &> ../Outputs/Shell-Scripts/UMS-Round1.out
-```
-
-
 ## Baseline {#baseline}
 
-- We'll run an un-optimized baseline auto-coder so we get an apples-to-apples comparison.
-
+- We'll run first run an un-optimized baseline auto-coder for proper comparisons.
 
 ### Run auto-coder {#baseline-run}
 
-- Load Bash, navigate to the `Shell-Scripts/` directory, and run the following:
+- To dot this, we load Bash, navigate to the `Shell-Scripts/` directory, and run the following:
 
 ```{bash, eval=FALSE}
 bash Baseline.sh &> ../Outputs/Shell-Scripts/Run-Baseline.out
 ```
 
-- Once that script is done running, you should have a new auto-coder file: `Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.0.Rds`.
-
+- Once that script is done running, a new auto-coder file is generated: `Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.0.Rds`.
 
 ### Extract fairness and performance metrics {#baseline-metrics}
 
-- We'll now extract fairness/performance metrics from this auto-coder (using `cls_summary()` and save metrics to `Outputs/Performance/`. To extract and save fairness/performance metrics from the baseline auto-coder, switch back to R (on the same computer the auto-coder was run on), and run the following code:
+- We'll now extract fairness/performance metrics from this auto-coder (using `cls_summary()`) and save metrics to `Outputs/Performance/`. To extract and save fairness/performance metrics from the baseline auto-coder:
 
 ```{r, eval=params$extract_metrics}
 ##Get list of UMS descriptions
@@ -130,7 +113,6 @@ cls_baseline %>%
   write_csv("Outputs/Performance/Perf_Baseline.csv")
 ```
 
-
 - We won't analyze baseline fairness here because its whole purpose is to compare UMSs against it (with neither the baseline nor UMS auto-coders optimized for performance). However, it's worth noting that there are small differences in fairness/performance between this un-optimized baseline and the previously trained auto-coder:
 
 ```{r}
@@ -145,7 +127,7 @@ list(Initial = cls_summary(fstInit),
   map_dfr(select, Acc, Acc_Diff, matches("ClassAcc_(Present|Absent)$"),
           matches("ClassAcc_(Present|Absent)_Diff"),
           .id="Version") %>%
-  ##LabPhon/Baseline in separate columns, one row per metric * type
+  ##Initial/Baseline in separate columns, one row per metric * type
   pivot_longer(contains("Acc"), names_to="Metric") %>%
   mutate(Type = if_else(str_detect(Metric, "Diff"), "Fairness", "Performance"),
          Metric = fct_inorder(if_else(str_detect(Metric, "Absent|Present"),
@@ -159,22 +141,18 @@ list(Initial = cls_summary(fstInit),
 
 ## UMS round 1
 
-- The auto-coders in UMS round 1 include downsampling, valid predictor selection, and normalization UMSs (see [here](UMS-Info.html) for more info).
-
+- The auto-coders in UMS round 1 include downsampling and valid predictor selection UMSs.
 
 ### Run auto-coders and extract metrics {#ums1-run}
 
-Load Bash, navigate to `Shell-Scripts/`, and run one of the following:
+- We'll do this again using Bash, navigating to `Shell-Scripts/`, and running the following:
 
 ```{bash, eval=FALSE}
 ##Run directly
 bash UMS-Round1.sh &> ../Outputs/Shell-Scripts/UMS-Round1.out
 ```
 
-
-Once that script is done running, you should have a bunch more files in `Outputs/Diagnostic-Files/Temp-Autocoders/`.
-
-To extract and save fairness/performance metrics from the round 1 auto-coders, switch back to R (staying on the same computer), and run the following code:
+- Once that script is done running, there should files corresponding to each new classifier/UMS in `Outputs/Diagnostic-Files/Temp-Autocoders/`. We'll now extract and save fairness/performance metrics from the round 1 auto-coders:
 
 ```{r, eval=params$extract_metrics}
 ##Get auto-coder filenames (exclude UMS 0.x precursor auto-coders)
@@ -198,20 +176,17 @@ cls_round1 %>%
   write_csv("Outputs/Performance/Perf_UMS-Round1.csv")
 ```
 
----
-
-<a id="meas-precursor" />
-
-We'll also extract and save variable importance data from particular auto-coders.
-Several UMSs are "valid predictor selection" strategies: they remove acoustic measures that could inadvertently signal gender.
-To determine which measures could inadvertently signal gender, we run a auto-coder predicting _speaker gender_ rather than rhoticity and discard the measures that were "too helpful" in predicting gender.
-The following code pulls variable importance from these "precursor" auto-coders.
+- We'll also extract and save variable importance data from particular auto-coders.
+Several UMSs are "valid predictor selection" strategies: they remove acoustic measures that could inadvertently signal speaker race. To determine which measures could inadvertently signal speaker race, we run an auto-coder predicting _speaker race_ rather than rhoticity and discard the measures that were "too helpful" in predicting gender. The following code pulls variable importance from these "precursor" auto-coders.
 
 ```{r, eval=params$extract_metrics}
+##UMS 0.1.1
 readRDS("Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.1.1.Rds") %>% 
   pluck("finalModel", "variable.importance") %>% 
   {tibble(Measure=names(.), Importance=.)} %>% 
   write.csv("Outputs/Other/Var-Imp_UMS0.1.1.csv", row.names=FALSE)
+
+##UMS 0.2
 readRDS("Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.2.Rds") %>% 
   map_dfr(~ .x %>% 
             pluck("finalModel", "variable.importance") %>% 
@@ -221,13 +196,11 @@ readRDS("Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.2.Rds") %>%
   write.csv("Outputs/Other/Var-Imp_UMS0.2.csv", row.names=FALSE)
 ```
 
-This step isn't strictly necessary for the R code in this document, but it allows us to run [`umsData()`](index#r-scripts) for all UMSs without needing to be on the [computer where the auto-coders are saved](index#a-quick-note-on-the-two-computer-setup).
-
+- This step isn't strictly necessary for the R code in this document, but it allows us to run [`umsData()`](index#r-scripts) for all UMSs without needing to be on the computer where the auto-coders are saved (if it's different).
 
 ### Analyze fairness and performance
 
-Now we can analyze metrics on a user-friendlier system.
-Read fairness/performance data for the round 1 auto-coders, and add baseline data:
+- We'll start reading fairness/performance data for the round 1 auto-coders, and add baseline data:
 
 ```{r}
 ##Read
@@ -276,7 +249,7 @@ perfPlot_round1 %>%
   theme_bw()
 ```
 
-To make the baseline stand out, we can plot it with separate aesthetics:
+- To make the baseline stand out, we can plot it with separate aesthetics:
 
 ```{r}
 perfPlot_round1 %>%
@@ -300,251 +273,7 @@ perfPlot_round1 %>%
   theme_bw()
 ```
 
-
-While numerous UMSs improve on fairness relative to the baseline, there is no one obvious winner.
-This is often because a UMS will perform well on some metrics but poorly on others.
-For example, while UMS 1.3.2 improves fairness and performance for overall accuracy and Absent class accuracy, it has dismal performance for Present class accuracy (under 40%).
-In other instances the disparity is more dramatic;
-for example, UMS 1.5 is clearly superior for the fairness/performance tradeoff when it comes to Present class accuracy, but its Absent class accuracy fairness is _worse_ than the baseline.
-
-
-## UMS round 2
-
-Since the round 1 results weren't completely satisfactory, I decided to attempt combination strategies: combining downsampling with either valid predictor selection or normalization.
-Combining these strategies is feasible because different categories of UMS affect the data in different ways;
-downsampling UMSs remove tokens (rows), valid predictor selection UMSs remove acoustic measures (columns), and normalization transforms acoustic measures.
-This could theoretically produce better results if the strengths and weakness of the combined UMSs hedge against one another (e.g., the improvements in Present class accuracy performance for UMS 2.2 could balance out the decline in Present class accuracy performance for UMS 1.3.2).
-
-I chose 8 combination UMSs based on round 1 results: 2 downsampling UMSs (1.3.1, 1.3.2) $\times$ 4 other UMSs (2.1.1, 2.2, 2.3, 3.1).
-I chose these UMSs because they were relatively balanced across all 3 metrics for fairness and performance (i.e., excluding UMSs like 1.5 that performed very poorly on at least one metric).
-In your own projects, it may be appropriate to choose different UMSs to combine depending on how the round 1 results shake out.
-
-
-### Run auto-coders and extract metrics {#ums2-run}
-
-Load Bash, navigate to `Shell-Scripts/`, and run one of the following:
-
-```{bash, eval=FALSE}
-##Run directly
-bash UMS-Round2.sh &> ../Outputs/Shell-Scripts/UMS-Round2.out
-```
-
-
-Once that script is done running, you should have additional files in `Outputs/Diagnostic-Files/Temp-Autocoders/`.
-
-To extract and save fairness/performance metrics from the round 2 auto-coders, switch back to R (staying on the same computer), and run the following code:
-
-```{r, eval=params$extract_metrics}
-##Get auto-coder filenames (all combo UMSs start with the digit 4)
-files_round2 <- list.files("Outputs/Diagnostic-Files/Temp-Autocoders/", 
-                           "Run-UMS_UMS4", full.names=TRUE)
-
-##Read auto-coder files
-cls_round2 <-
-  files_round2 %>% 
-  ##Better names
-  set_names(str_remove_all(files_round2, ".+_|\\.Rds")) %>% 
-  map(readRDS)
-
-##Extract performance
-cls_round2 %>% 
-  map_dfr(cls_summary, .id="Classifier") %>% 
-  ##Add long description
-  left_join(umsList %>% mutate(Classifier = paste0("UMS", UMS)) %>% select(-UMS),
-            by="Classifier") %>% 
-  ##Save data
-  write_csv("Outputs/Performance/Perf_UMS-Round2.csv")
-```
-
-
-### Analyze fairness and performance
-
-Now we can analyze these metrics on a user-friendlier system.
-Read fairness/performance data for the round 1 auto-coders, and add baseline data:
-
-```{r}
-##Read
-perf_baseline <- read_csv("Outputs/Performance/Perf_Baseline.csv")
-perf_round2 <- rbind(perf_baseline,
-                     read_csv("Outputs/Performance/Perf_UMS-Round2.csv"))
-
-##Shape performance dataframe for plotting: Fairness/Performance in separate
-##  columns, one row per UMS * metric, Category factor, shorter Classifier label
-perfPlot_round2 <- perf_round2 %>%
-  select(Classifier,
-         Acc, Acc_Diff, matches("ClassAcc_(Present|Absent)$"),
-         matches("ClassAcc_(Present|Absent)_Diff")) %>%
-  ##Fairness/Performance in separate columns, one row per UMS * metric
-  pivot_longer(contains("Acc")) %>%
-  mutate(Metric = fct_inorder(if_else(str_detect(name, "Absent|Present"),
-                                      paste(str_extract(name, "Absent|Present"), "class accuracy"),
-                                      "Overall accuracy")),
-         name = if_else(str_detect(name, "Diff"), "Fairness", "Performance")) %>%
-  pivot_wider() %>%
-  ##Add Category column, shorter Classifier label
-  mutate(Category = recode_factor(str_extract(Classifier, "\\d"), !!!categories),
-         across(Classifier, ~ str_remove(.x, "UMS")))
-```
-
-
-Plot (using dotted line for baseline)
-
-```{r}
-perfPlot_round2 %>%
-  mutate(across(Fairness, abs)) %>% 
-  ##Exclude Baseline from points & labels
-  filter(Classifier != "0.0") %>% 
-  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier)) +
-  ##Points w/ ggrepel'd labels
-  geom_point(size=3) +
-  geom_text_repel(show.legend=FALSE, max.overlaps=20, color="black") +
-  ##Dotted line for baseline
-  geom_vline(data=perfPlot_round2 %>% filter(Classifier=="0.0"), 
-             aes(xintercept=abs(Fairness)), linetype="dashed") +
-  geom_hline(data=perfPlot_round2 %>% filter(Classifier=="0.0"), 
-             aes(yintercept=Performance), linetype="dashed") +
-  ##Each metric in its own facet
-  facet_wrap(~ Metric, nrow=1) +
-  ##Lower fairness on the right (so top-right is optimal)
-  scale_x_reverse() +
-  ##Theme
-  theme_bw() +
-  ##Rotate x-axis labels to avoid clash
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-```
-
-
-We can also plot round 1 & 2 together:
-
-```{r}
-##Put perfPlot dfs together
-perfPlot <- rbind(perfPlot_round1,
-                  perfPlot_round2) %>% 
-  ##Remove duplicate Baseline rows
-  distinct()
-
-perfPlot %>%
-  mutate(across(Fairness, abs)) %>% 
-  ##Exclude Baseline from points
-  filter(Classifier != "0.0") %>% 
-  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier)) +
-  ##Points w/ ggrepel'd labels
-  geom_point(size=3) +
-  geom_text_repel(show.legend=FALSE, max.overlaps=40) +
-  ##Dotted line for baseline
-  geom_vline(data=perfPlot %>% filter(Classifier=="0.0"), 
-             aes(xintercept=abs(Fairness)), linetype="dashed") +
-  geom_hline(data=perfPlot %>% filter(Classifier=="0.0"), 
-             aes(yintercept=Performance), linetype="dashed") +
-  ##Each metric in its own facet
-  facet_wrap(~ Metric, nrow=1) +
-  ##Lower fairness on the right (so top-right is optimal)
-  scale_x_reverse() +
-  ##Theme
-  theme_bw() +
-  ##Rotate x-axis labels to avoid clash
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-```
-
-
-
-## Identify optimal auto-coder
-
-Now that we've got all our performance data, we need to choose which auto-coder to actually _use_ for auto-coding data that hasn't previously been coded (i.e., to scale up our dataset of coded tokens without more manual coding).
-The previous plot tells us that some UMSs are better than others (e.g., we obviously won't be using UMS 1.2), but there isn't any UMS that clearly stands out from the rest.
-Furthermore, even if we eliminate the obviously bad options, there seems to be a tradeoff between performance and fairness.
-How do we winnow down the space of options?
-One technique is to find the UMSs that are _Pareto-optimal_: a given UMS is Pareto-optimal if every other UMS that is _better_ in fairness is _worse_ in performance, or vice versa.
-In this sense, the best UMS for our purposes might be neither the fairest nor the best-performing, but the UMS for which there's a good fairness--performance tradeoff.
-
-
-In R, we can use `psel()` from the `rPref` package to find Pareto-optimal auto-coders.
-For example, the following auto-coders are Pareto-optimal for Overall accuracy:
-
-```{r}
-perfPlot %>% 
-  mutate(across(Fairness, abs)) %>% 
-  filter(Metric=="Overall accuracy") %>% 
-  psel(high(Performance) * low(Fairness))
-```
-
-
-Here's that same info represented in a plot:
-
-```{r, warning=FALSE}
-perfPlot %>% 
-  mutate(across(Fairness, abs)) %>% 
-  filter(Metric=="Overall accuracy",
-         Classifier != "0.0") %>%
-  mutate(`Pareto-optimal` = Classifier %in% psel(., high(Performance) * low(Fairness))$Classifier) %>% 
-  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier, alpha=`Pareto-optimal`)) +
-  ##Points w/ ggrepel'd labels
-  geom_point(size=3) +
-  geom_text_repel(show.legend=FALSE, max.overlaps=40) +
-  ##Dotted line for baseline
-  geom_vline(data=perfPlot %>% 
-               filter(Metric=="Overall accuracy", Classifier=="0.0"), 
-             aes(xintercept=abs(Fairness)), linetype="dashed") +
-  geom_hline(data=perfPlot %>% 
-               filter(Metric=="Overall accuracy", Classifier=="0.0"), 
-             aes(yintercept=Performance), linetype="dashed") +
-  ##Lower fairness on the right (so top-right is optimal)
-  scale_x_reverse() +
-  ##Theme
-  theme_bw() +
-  ##Rotate x-axis labels to avoid clash
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-```
-
-
-In this case, we have 3 metrics, so for each metric we find the UMSs that are Pareto-optimal for the fairness--performance tradeoff
-
-```{r}
-##Get list of dataframes, one per Metric, w/ only Pareto-optimal UMSs
-paretoOpt <- 
-  perfPlot %>% 
-  mutate(across(Fairness, abs)) %>% 
-  group_by(Metric) %>% 
-  ##Identify Pareto-optimal UMSs
-  group_map(~ psel(.x, high(Performance) * low(Fairness)),
-            .keep=TRUE)
-##Display as a single dataframe
-bind_rows(paretoOpt)
-```
-
-
-In this particular dataset, we get really lucky:
-There is one UMS, 4.2.1, that is shared among these 3 sets of Pareto-optimal UMSs.
-This is certainly _not_ a guaranteed outcome!
-
-```{r}
-##Get Classifier value that is in all 3 dataframes (if any)
-paretoOpt %>% 
-  map("Classifier") %>% 
-  reduce(intersect)
-```
-
-Incidentally, UMS 4.2.1 also happens to be the fairest UMS for all 3 metrics---
-this is _definitely_ not a guaranteed outcome!
-
-```{r, results='hold'}
-##Get fairest UMS for each Metric
-perfPlot %>% 
-  mutate(across(Fairness, abs)) %>% 
-  group_by(Metric) %>%
-  filter(Fairness==min(Fairness))
-##Could also do
-# perfPlot %>%
-#   mutate(across(Fairness, abs)) %>%
-#   group_by(Metric) %>%
-#   group_modify(~ psel(.x, low(Fairness))) 
-```
-
-
-Thus, we choose 4.2.1 as the optimal UMS.
-In fact, this is the UMS that was used to grow an /r/ dataset fivefold for the 2021 _Language Variation and Change_ article ["Gender separation and the speech community: Rhoticity in early 20th century Southland New Zealand English"](https://doi.org/10.1017/S0954394521000090) by me, Lynn Clark, Jen Hay, and Kevin Watson.
-(The auto-coder used for that analysis was optimized for performance, so the fairness we report in that paper is slightly worse than UMS 4.2.1.)
-
+- There are several UMSs that  improve on fairness relative to the baseline, but there isn't a clear cut optimal UMS, i.e., no UMS does well across all metrics. UMS 1.3.1. is better in overall fairness and accuracy and present class fairness and accuracy, but both performance and fairness are poor for absent class accuracy. UMS 1.2 is better in overall fairness and around the same in performance as the baseline in overall accuracy, better for both metrics in absent class accuracy, but worse in both fairness and performance in present class accuracy (although not as markedly). The remaining metrics cluster around the baseline.
 
 # Script meta-info {#script-info}
 
@@ -571,7 +300,6 @@ tmpAuto <-
 cat("Disk space: ", round(sum(tmpAuto$size)/2^20, 1), " Mb (",
     nrow(tmpAuto), " files)", sep="")
 ```
-
 
 Complete repository:
 
@@ -613,30 +341,6 @@ RAM:
 
 ## Running time
 
-Total running time for shell scripts:
-
-```{r timing, eval=TRUE}
-##Parse HH:MM:SS and print as nicer time
-printDur <- function(x) {
-  library(lubridate)
-  library(magrittr)
-  x %>% 
-    lubridate::hms() %>% 
-    as.duration() %>% 
-    sum() %>% 
-    seconds_to_period()
-}
-scripts <- c("Baseline", "UMS-Round1", "UMS-Round2")
-cat("Total running time for", paste0(scripts, ".sh", collapse=", "), fill=TRUE)
-paste0("Outputs/Shell-Scripts/", paste0(scripts, ".out")) %>% 
-  map_chr(~ .x %>% 
-            readLines() %>% 
-            str_subset("RunTime")) %>% 
-  str_extract("[\\d:]{2,}") %>%
-  printDur()
-```
-
-
 Total running time for R code in this document (with `params$extract_metrics` set to `r params$extract_metrics`), in seconds:
 
 ```{r, eval=TRUE}
@@ -644,17 +348,6 @@ timing$stop <- proc.time()
 
 timing$stop - timing$start
 ```
-
-
-
-# Acknowledgements
-
-I would like to thank Chris Bartlett, the Southland Oral History Project (Invercargill City Libraries and Archives), and the speakers for sharing their data and their voices.
-Thanks are also due to Lynn Clark, Jen Hay, Kevin Watson, and the New Zealand Institute of Language, Brain and Behaviour for supporting this research.
-Valuable feedback was provided by audiences at NWAV 49, the Penn Linguistics Conference, Pitt Computer Science, and the Michigan State SocioLab.
-Other resources were provided by a Royal Society of New Zealand Marsden Research Grant (16-UOC-058) and the University of Pittsburgh Center for Research Computing (specifically, the H2P cluster supported by NSF award number OAC-2117681).
-Any errors are mine entirely.
-
 
 <!-- Footer: Add CSS styling -->
 

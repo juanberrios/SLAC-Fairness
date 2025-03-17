@@ -38,11 +38,11 @@
 ##  necessary columns, and optionally drop outliers
 umsData <- function(data,
                     strategy,
-                    dependent=Rpresent,
+                    dependent=rpresent,
                     group=race,
                     ##predictors (tidyselect): Set of columns that comprise
                     ##  predictor set (aka feature set)
-                    predictors=TokenDur:absSlopeF0,
+                    predictors=TokenDur:diffF4F3_80,
                     ##dropCols (character vector): Columns for which rows with
                     ##  FALSE should be dropped (i.e., for outlier-dropping).
                     ##  Rows are dropped before applying UMS
@@ -65,10 +65,10 @@ umsData <- function(data,
   suppressWarnings(suppressMessages(library(dplyr)))
   ##Subroutine for core UMS functionality
   implementUMS <- function(x, UMS) {
-    ##If not normalizing, drop Speaker column (if it exists)
+    ##If not normalizing, drop speaker column (if it exists)
     if (!startsWith(UMS, "3")) {
       x <- x %>%
-        select(-any_of("Speaker"))
+        select(-any_of("speaker"))
     }
 
     # Baseline/precursor UMSs -----------------------------------------------
@@ -455,9 +455,9 @@ umsData <- function(data,
       x <- filter(x, complete.cases(x))
 
       if (UMS == "3.1") {
-        ##Check that Speaker is in data
-        if (!("Speaker" %in% colnames(x))) {
-          stop("UMS 3.1 requires Speaker column in x")
+        ##Check that speaker is in data
+        if (!("speaker" %in% colnames(x))) {
+          stop("UMS 3.1 requires speaker column in x")
         }
 
         ##Check that precursor file exists & is in the correct format
@@ -468,17 +468,17 @@ umsData <- function(data,
           stop("The normalization baseline file for UMS 3.1 must be in .csv format")
         }
         normBase <- read.csv(normFile)
-        if (!all(c("Speaker", "MinPitch", "MaxPitch") %in% colnames(normBase))) {
-          stop("The normalization baseline file for UMS 3.1 must have at least columns Speaker,MinPitch,MaxPitch")
+        if (!all(c("speaker", "MinPitch", "MaxPitch") %in% colnames(normBase))) {
+          stop("The normalization baseline file for UMS 3.1 must have at least columns speaker,MinPitch,MaxPitch")
         }
 
         ##Check that all speakers in x are in normBase
         xSpkrs <-
-          x$Speaker %>%
+          x$speaker %>%
           unique() %>%
           as.character()
         meanSpkrs <-
-          normBase$Speaker %>%
+          normBase$speaker %>%
           unique() %>%
           as.character()
         missingSpkrs <- setdiff(xSpkrs, meanSpkrs)
@@ -488,8 +488,8 @@ umsData <- function(data,
 
         ##Normalize pitch according to baseline
         x <- x %>%
-          left_join(normBase %>% select(Speaker, MinPitch, MaxPitch),
-                    by="Speaker") %>%
+          left_join(normBase %>% select(speaker, MinPitch, MaxPitch),
+                    by="speaker") %>%
           mutate(F0min = F0min - MinPitch,
                  F0max = F0max - MaxPitch)
 
@@ -497,7 +497,7 @@ umsData <- function(data,
 
       ##Remove extra columns
       x <- x %>%
-        select(-c(Speaker, MinPitch, MaxPitch))
+        select(-c(speaker, MinPitch, MaxPitch))
       return(x)
     }
   }
@@ -548,7 +548,7 @@ umsData <- function(data,
   ##Drop unused columns (pre-UMS, to avoid drop_na() dropping too many rows)
   data <- data %>%
     select({{dependent}}, {{group}}, {{predictors}}, ends_with("_Outlier"),
-           any_of("Speaker"))
+           any_of("speaker"))
   if (!outlierCols) {
     data <- data %>%
       select(-ends_with("_Outlier"))
@@ -575,10 +575,10 @@ umsData <- function(data,
   data
 }
 
-##Specify model formula based on UMS (e.g., Rpresent ~ . - race)
+##Specify model formula based on UMS (e.g., rpresent ~ . - race)
 umsFormula <- function(data,
                        strategy,
-                       dependent=Rpresent,
+                       dependent=rpresent,
                        group=race,
                        ##outlierCols (logical): Append " - [feature1]_Outlier
                        ##  - [feature2]_Outlier - ..." to formula?
@@ -597,10 +597,10 @@ umsFormula <- function(data,
   dep <- deparse(substitute(dependent))
   gp <- deparse(substitute(group))
   if (strategy %in% c("0.1.1", "0.1.2", "0.1.3")) {
-    ##e.g., race ~ . - Rpresent
+    ##e.g., race ~ . - rpresent
     formula <- paste(gp, "~ . -", dep)
   } else {
-    ##e.g., Rpresent ~ . - race
+    ##e.g., rpresent ~ . - race
     formula <- paste(dep, "~ . -", gp)
   }
 
@@ -704,7 +704,7 @@ umsSummaryFunc <- function(strategy,
   if (strategy %in% c("0.1.1", "0.1.2", "0.1.3")) {
     summaryrace
   } else {
-    summaryRpresent
+    summaryrpresent
   }
 }
 
@@ -714,8 +714,8 @@ umsSummaryFunc <- function(strategy,
 ##  arg of caret::trainControl()
 ##See https://topepo.github.io/caret/model-training-and-tuning.html#metrics
 
-##Dependent = Rpresent
-summaryRpresent <- function(data, lev=NULL, model=NULL, obsCol="obs",
+##Dependent = rpresent
+summaryrpresent <- function(data, lev=NULL, model=NULL, obsCol="obs",
                             returnDF=FALSE) {
   suppressWarnings(suppressMessages(library(ROCR)))
   suppressWarnings(suppressMessages(library(dplyr)))
@@ -773,7 +773,7 @@ summaryRpresent <- function(data, lev=NULL, model=NULL, obsCol="obs",
 }
 
 ##Dependent = race
-summaryRender <- function(data, lev=NULL, model=NULL, obsCol="obs",
+summaryrace <- function(data, lev=NULL, model=NULL, obsCol="obs",
                           returnDF=FALSE) {
   suppressWarnings(suppressMessages(library(ROCR)))
   suppressWarnings(suppressMessages(library(dplyr)))
@@ -1222,10 +1222,10 @@ cls_summary <- function(x,
 ##Print data
 printData <- function(data,
                       strategy,
-                      dependent=Rpresent,
+                      dependent=rpresent,
                       group=race,
                       outlierCols=FALSE,
-                      excludeCols=c(Rpresent, race, contains("Outlier")),
+                      excludeCols=c(rpresent, race, contains("Outlier")),
                       umsTxt="../Input-Data/UMS-List.txt") {
   ##Validate args
   umsValidate(strategy, umsTxt=umsTxt)

@@ -244,7 +244,7 @@ source("UMS-Utils.R")
 printHeader("Outlier dropping", "=")
 printHeaderUMS(strategy)
 ##Unlike other scripts, keep outlier columns in clsData and exclude them via
-##  model formula (i.e., Rpresent ~ . - race - Outlier1 - Outlier2 - ...).
+##  model formula (i.e., rpresent ~ . - race - Outlier1 - Outlier2 - ...).
 ##This keeps the full dataframe (outlier columns included) in the output
 ##  classifier object, which in turn makes it easier to assess the impact of
 ##  outlier columns on classifier performance (using outlierCors())
@@ -252,7 +252,7 @@ printHeaderUMS(strategy)
 clsData <- readRDS(inputPath)
 clsData <- clsData[clsData$HowCoded=="Hand",]
 ##Get model formula that excludes all outliers in the UMS'd version of the data
-##  (i.e., Rpresent ~ . - race - Outlier1 - Outlier2 - ...). Need to use
+##  (i.e., rpresent ~ . - race - Outlier1 - Outlier2 - ...). Need to use
 ##  umsData() here because of column-dropping UMSs (i.e., if the UMS drops Col1,
 ##  clsForm should *not* have `- Col1_Outlier`).
 clsForm <- umsFormula(umsData(clsData, strategy, outlierCols=TRUE),
