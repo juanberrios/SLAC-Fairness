@@ -1,7 +1,7 @@
 ---
 title: Data analysis
 author: Juan Berríos, Dan Villareal
-date: "03/16/2025"
+date: "03/21/2025"
 output:
   html_document:
     toc: yes
@@ -202,7 +202,7 @@ readRDS("Outputs/Diagnostic-Files/Temp-Autocoders/Run-UMS_UMS0.2.Rds") %>%
 
 - We'll start reading fairness/performance data for the round 1 auto-coders, and add baseline data:
 
-```{r}
+```{r, message=FALSE}
 ##Read
 perf_baseline <- read_csv("Outputs/Performance/Perf_Baseline.csv")
 perf_round1 <- rbind(perf_baseline,
@@ -274,6 +274,132 @@ perfPlot_round1 %>%
 ```
 
 - There are several UMSs that  improve on fairness relative to the baseline, but there isn't a clear cut optimal UMS, i.e., no UMS does well across all metrics. UMS 1.3.1. is better in overall fairness and accuracy and present class fairness and accuracy, but both performance and fairness are poor for absent class accuracy. UMS 1.2 is better in overall fairness and around the same in performance as the baseline in overall accuracy, better for both metrics in absent class accuracy, but worse in both fairness and performance in present class accuracy (although not as markedly). The remaining metrics cluster around the baseline.
+
+## UMS round 2
+
+- Given the mixed results of the first round of UMS, we'll try some combination strategies: combining downsampling with valid predictor selection. As of now we are only attempted two combinations.
+
+### Run auto-coders and extract metrics {#ums2-run}
+
+- We'll load Bash, navigate to `Shell-Scripts/`, and run the following. The results will be saved in the same directory.
+
+```{bash, eval=FALSE}
+##Run directly
+bash UMS-Round2.sh &> ../Outputs/Shell-Scripts/UMS-Round2.out
+```
+
+- To extract and save fairness/performance metrics from the round 2 auto-coders, we switch back to R and run the following code:
+
+```{r, eval=params$extract_metrics}
+##Get auto-coder filenames (all combo UMSs start with the digit 4)
+files_round2 <- list.files("Outputs/Diagnostic-Files/Temp-Autocoders/", 
+                           "Run-UMS_UMS4", full.names=TRUE)
+
+##Read auto-coder files
+cls_round2 <-
+  files_round2 %>% 
+  ##Better names
+  set_names(str_remove_all(files_round2, ".+_|\\.Rds")) %>% 
+  map(readRDS)
+
+##Extract performance
+cls_round2 %>% 
+  map_dfr(cls_summary, .id="Classifier") %>% 
+  ##Add long description
+  left_join(umsList %>% mutate(Classifier = paste0("UMS", UMS)) %>% select(-UMS),
+            by="Classifier") %>% 
+  ##Save data
+  write_csv("Outputs/Performance/Perf_UMS-Round2.csv")
+```
+
+
+### Analyze fairness and performance
+
+- Read fairness/performance data for the round 1 auto-coders, and add baseline data:
+
+```{r, message=FALSE}
+##Read
+perf_baseline <- read_csv("Outputs/Performance/Perf_Baseline.csv")
+perf_round2 <- rbind(perf_baseline,
+                     read_csv("Outputs/Performance/Perf_UMS-Round2.csv"))
+
+##Shape performance dataframe for plotting: Fairness/Performance in separate
+##  columns, one row per UMS * metric, Category factor, shorter Classifier label
+perfPlot_round2 <- perf_round2 %>%
+  select(Classifier,
+         Acc, Acc_Diff, matches("ClassAcc_(Present|Absent)$"),
+         matches("ClassAcc_(Present|Absent)_Diff")) %>%
+  ##Fairness/Performance in separate columns, one row per UMS * metric
+  pivot_longer(contains("Acc")) %>%
+  mutate(Metric = fct_inorder(if_else(str_detect(name, "Absent|Present"),
+                                      paste(str_extract(name, "Absent|Present"), "class accuracy"),
+                                      "Overall accuracy")),
+         name = if_else(str_detect(name, "Diff"), "Fairness", "Performance")) %>%
+  pivot_wider() %>%
+  ##Add Category column, shorter Classifier label
+  mutate(Category = recode_factor(str_extract(Classifier, "\\d"), !!!categories),
+         across(Classifier, ~ str_remove(.x, "UMS")))
+```
+
+- Plot (using dotted line for baseline)
+
+```{r}
+perfPlot_round2 %>%
+  mutate(across(Fairness, abs)) %>% 
+  ##Exclude Baseline from points & labels
+  filter(Classifier != "0.0") %>% 
+  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier)) +
+  ##Points w/ ggrepel'd labels
+  geom_point(size=3) +
+  geom_text_repel(show.legend=FALSE, max.overlaps=20, color="black") +
+  ##Dotted line for baseline
+  geom_vline(data=perfPlot_round2 %>% filter(Classifier=="0.0"), 
+             aes(xintercept=abs(Fairness)), linetype="dashed") +
+  geom_hline(data=perfPlot_round2 %>% filter(Classifier=="0.0"), 
+             aes(yintercept=Performance), linetype="dashed") +
+  ##Each metric in its own facet
+  facet_wrap(~ Metric, nrow=1) +
+  ##Lower fairness on the right (so top-right is optimal)
+  scale_x_reverse() +
+  ##Theme
+  theme_bw() +
+  ##Rotate x-axis labels to avoid clash
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+- We can also plot round 1 & 2 together:
+
+```{r}
+##Put perfPlot dfs together
+perfPlot <- rbind(perfPlot_round1,
+                  perfPlot_round2) %>% 
+  ##Remove duplicate Baseline rows
+  distinct()
+
+perfPlot %>%
+  mutate(across(Fairness, abs)) %>% 
+  ##Exclude Baseline from points
+  filter(Classifier != "0.0") %>% 
+  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier)) +
+  ##Points w/ ggrepel'd labels
+  geom_point(size=3) +
+  geom_text_repel(show.legend=FALSE, max.overlaps=40) +
+  ##Dotted line for baseline
+  geom_vline(data=perfPlot %>% filter(Classifier=="0.0"), 
+             aes(xintercept=abs(Fairness)), linetype="dashed") +
+  geom_hline(data=perfPlot %>% filter(Classifier=="0.0"), 
+             aes(yintercept=Performance), linetype="dashed") +
+  ##Each metric in its own facet
+  facet_wrap(~ Metric, nrow=1) +
+  ##Lower fairness on the right (so top-right is optimal)
+  scale_x_reverse() +
+  ##Theme
+  theme_bw() +
+  ##Rotate x-axis labels to avoid clash
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+- It appears the current two combinations aren't any better. They perform similarly to the downsampling UMSs on their own.
 
 # Script meta-info {#script-info}
 
