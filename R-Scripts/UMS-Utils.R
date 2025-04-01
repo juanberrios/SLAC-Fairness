@@ -38,11 +38,11 @@
 ##  necessary columns, and optionally drop outliers
 umsData <- function(data,
                     strategy,
-                    dependent=rpresent,
-                    group=race,
+                    dependent=rpresent,  #Modify if different in your dataset
+                    group=race, #Modify if different in your dataset
                     ##predictors (tidyselect): Set of columns that comprise
                     ##  predictor set (aka feature set)
-                    predictors=TokenDur:diffF4F3_80,
+                    predictors=TokenDur:diffF4F3_80, #Modify if different in your dataset
                     ##dropCols (character vector): Columns for which rows with
                     ##  FALSE should be dropped (i.e., for outlier-dropping).
                     ##  Rows are dropped before applying UMS
@@ -59,7 +59,7 @@ umsData <- function(data,
                     varimpDir="../Outputs/Other/",
                     ##normFile (character): Path to csv file with speaker
                     ##  normalization baselines, for UMS 3.1
-                    normFile="../Input-Data/meanPitches.csv",
+                    normFile="../Input-Data/meanPitches.csv", #Not needing if not using normalization baselines
                     umsTxt="../Input-Data/UMS-List.txt") {
   # Implement strategies ------------------------------------------------------
   suppressWarnings(suppressMessages(library(dplyr)))
@@ -68,7 +68,7 @@ umsData <- function(data,
     ##If not normalizing, drop speaker column (if it exists)
     if (!startsWith(UMS, "3")) {
       x <- x %>%
-        select(-any_of("speaker"))
+        select(-any_of("speaker")) #Modify if different in your dataset
     }
 
     # Baseline/precursor UMSs -----------------------------------------------
@@ -108,7 +108,7 @@ umsData <- function(data,
         ##Downsample by group to smaller amount
         set.seed(seed)
         x <- x %>%
-          ##Downsample men's data so there's a race balance
+          ##Downsample black speakers' data so there's a speaker race balance
           group_by({{group}}) %>%
           slice_sample(n=nSmallerGroup) %>%
           ungroup()
@@ -124,7 +124,7 @@ umsData <- function(data,
         ##Downsample by class to minority amount
         set.seed(seed)
         x <- x %>%
-          ##Downsample men's data so there's a race balance
+          ##Downsample present tokens so there's an rpresent balance
           group_by({{dependent}}) %>%
           slice_sample(n=nMinorityClass) %>%
           ungroup()
@@ -560,11 +560,11 @@ umsData <- function(data,
     data <- implementUMS(data, strategy)
   } else {
     ##Combination UMSs
-    ##Decode UMS code as 4.X.Y: X encodes predictor selection/normalization UMS,
+    ##Decode UMS code as 4.X.Y: X encodes predictor selection UMS,
     ##  Y encodes downsampling UMS
     components <- strsplit(strategy, ".", fixed=TRUE)[[1]]
-    strat1 <- c("2.1.1", "2.2", "2.3", "3.1")[as.numeric(components[2])]
-    strat2 <- c("1.3.1", "1.3.2")[as.numeric(components[3])]
+    strat1 <- c("2.1.1", "2.1.2", "2.1.3", "2.1.4", "2.1.5")[as.numeric(components[2])]
+    strat2 <- c("1.1", "1.2", "1.3.1", "1.3.2", "1.4", "1.5", "1.6")[as.numeric(components[3])]
     ##Implement
     data <- data %>%
       implementUMS(strat1) %>%

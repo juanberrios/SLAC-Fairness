@@ -1,7 +1,7 @@
 ---
 title: Data analysis
 author: Juan Berríos, Dan Villareal
-date: "03/21/2025"
+date: "03/31/2025"
 output:
   html_document:
     toc: yes
@@ -277,7 +277,7 @@ perfPlot_round1 %>%
 
 ## UMS round 2
 
-- Given the mixed results of the first round of UMS, we'll try some combination strategies: combining downsampling with valid predictor selection. As of now we are only attempted two combinations.
+- Given the mixed results of the first round of UMS, we'll try some combination strategies: combining downsampling with valid predictor selection. We attempted a total of eight combinations.
 
 ### Run auto-coders and extract metrics {#ums2-run}
 
@@ -399,7 +399,77 @@ perfPlot %>%
   ##Rotate x-axis labels to avoid clash
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
-- It appears the current two combinations aren't any better. They perform similarly to the downsampling UMSs on their own.
+
+- Upon a visual examination the combinations overall appear to do a better job overall than the UMSs by the themselves. However, some combinations (e.g., 4.2.1, 4.3.1, 4.1., 4.4.3) appear to mimic the massive effect of downsampling strategies that makes them perform poorly and efficiently with only one of two metrics. 
+
+### Identify optimal auto-coder
+
+- The final step is to identify an optimal autoc-coder. At present, although there are clusters of better or worse UMSs, there isn’t a single UMS that clearly stands out from the rest. To wind down options we will find the UMS (or combination thereof) that is Pareto-optimal (i.e., the one good fairness–performance tradeoff, see another example with a gender classifier [here](https://djvill.github.io/SLAC-Fairness/Analysis-Walkthrough)). In R, we can use `psel()` from the rPref package to find Pareto-optimal auto-coders. For example, the following auto-coders are Pareto-optimal for Overall accuracy:
+
+```{r}
+perfPlot %>% 
+  mutate(across(Fairness, abs)) %>% 
+  filter(Metric=="Overall accuracy") %>% 
+  psel(high(Performance) * low(Fairness))
+```
+In a plot:
+
+```{r}
+perfPlot %>% 
+  mutate(across(Fairness, abs)) %>% 
+  filter(Metric=="Overall accuracy",
+         Classifier != "0.0") %>%
+  mutate(`Pareto-optimal` = Classifier %in% psel(., high(Performance) * low(Fairness))$Classifier) %>% 
+  ggplot(aes(x=Fairness, y=Performance, color=Category, label=Classifier, alpha=`Pareto-optimal`)) +
+  ##Points w/ ggrepel'd labels
+  geom_point(size=3) +
+  geom_text_repel(show.legend=FALSE, max.overlaps=40) +
+  ##Dotted line for baseline
+  geom_vline(data=perfPlot %>% 
+               filter(Metric=="Overall accuracy", Classifier=="0.0"), 
+             aes(xintercept=abs(Fairness)), linetype="dashed") +
+  geom_hline(data=perfPlot %>% 
+               filter(Metric=="Overall accuracy", Classifier=="0.0"), 
+             aes(yintercept=Performance), linetype="dashed") +
+  ##Lower fairness on the right (so top-right is optimal)
+  scale_x_reverse() +
+  ##Theme
+  theme_bw() +
+  ##Rotate x-axis labels to avoid clash
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+- We have 3 metrics (overall accuracy, present class accuracy, and absent class accuracy), so for each metric we find the UMSs that are Pareto-optimal for the fairness–performance tradeoff:
+
+```{r}
+##Get list of dataframes, one per Metric, w/ only Pareto-optimal UMSs
+paretoOpt <- 
+  perfPlot %>% 
+  mutate(across(Fairness, abs)) %>% 
+  group_by(Metric) %>% 
+  ##Identify Pareto-optimal UMSs
+  group_map(~ psel(.x, high(Performance) * low(Fairness)),
+            .keep=TRUE)
+##Display as a single dataframe
+bind_rows(paretoOpt)
+```
+
+- There is one UMS (4.4.3) that is Pareto-optimal for two metrics. The remaining UMSs are only pareto-optimal for a single metric.  As seen below, however, no UMS is Pareto-optimal for all three metrics:
+
+```{r}
+##Get Classifier value that is in all 3 dataframes (if any)
+paretoOpt %>% 
+  map("Classifier") %>% 
+  reduce(intersect)
+```
+- When we isolate metrics, 4.4.3 also happens to be the fairest UMS for Present class accuracy. It's worth noting that Present is the larger class (approximately 2/3 of the tokens). However, it does poorly in both fairness and performance for the Absent class.
+
+```{r}
+##Get fairest UMS for each Metric
+perfPlot %>% 
+  mutate(across(Fairness, abs)) %>% 
+  group_by(Metric) %>%
+  filter(Fairness==min(Fairness))
+```
 
 # Script meta-info {#script-info}
 

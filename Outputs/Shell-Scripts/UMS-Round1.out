@@ -8,7 +8,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.1.1:
-  Classifier of race
+  Classifier of speaker race
 --------------------------------------------------------------------------------
 Data: 9284 tokens with 174 predictors
          race
@@ -24,7 +24,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 0.2:
-  Separate auto-coders of rpresent by race
+  Separate auto-coders of rpresent by speaker race
 --------------------------------------------------------------------------------
 Data: 9284 tokens with 174 predictors
          race
@@ -40,7 +40,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.1:
-  Downsample black to equalize token counts by race
+  Downsample black speakers to equalize token counts by speaker race
 --------------------------------------------------------------------------------
 Data: 8700 tokens with 174 predictors
          race
@@ -56,7 +56,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.2:
-  Downsample Present to equalize token counts by rpresent
+  Downsample Present tokens to equalize token counts by rpresent
 --------------------------------------------------------------------------------
 Data: 6862 tokens with 174 predictors
          race
@@ -72,7 +72,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.3.1:
-  Downsample white's Absent to equalize rpresent base rates by race
+  Downsample white speakers' Absent tokens to equalize rpresent base rates by speaker race
 --------------------------------------------------------------------------------
 Data: 6593 tokens with 174 predictors
          race
@@ -94,7 +94,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.3.2:
-  Downsample black's Present to equalize rpresent base rates by race
+  Downsample black speakers' Present tokens to equalize rpresent base rates by speaker race
 --------------------------------------------------------------------------------
 Data: 5188 tokens with 174 predictors
          race
@@ -116,7 +116,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.4:
-  Downsample black's data to equalize (a) token counts by race and (b) rpresent base rates by race
+  Downsample black speakers' data to equalize (a) token counts by speaker race and (b) rpresent base rates by speaker race
 --------------------------------------------------------------------------------
 Data: 6377 tokens with 174 predictors
          race
@@ -138,7 +138,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.5:
-  Downsample Present data to equalize (a) token counts by rpresent and (b) race base rates by rpresent
+  Downsample Present tokens to equalize (a) token counts by rpresent and (b) speaker race base rates by rpresent
 --------------------------------------------------------------------------------
 Data: 5458 tokens with 174 predictors
          race
@@ -154,7 +154,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 1.6:
-  Downsample race x rpresent to equalize token counts by race x rpresent
+  Downsample speaker race x rpresent to equalize token counts by speaker race x rpresent
 --------------------------------------------------------------------------------
 Data: 2216 tokens with 174 predictors
          race
@@ -170,7 +170,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.1:
-  Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 10%)
+  Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 10%)
 --------------------------------------------------------------------------------
 Data: 9284 tokens with 157 predictors
          race
@@ -186,7 +186,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.2:
-  Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 20%)
+  Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 20%)
 --------------------------------------------------------------------------------
 Data: 9284 tokens with 140 predictors
          race
@@ -202,7 +202,7 @@ package 'optparse' was built under R version 4.3.3
 
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 2.1.3:
-  Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 50%)
+  Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 50%)
 --------------------------------------------------------------------------------
 Data: 9284 tokens with 87 predictors
          race

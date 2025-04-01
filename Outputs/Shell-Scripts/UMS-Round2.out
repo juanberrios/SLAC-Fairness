@@ -1,7 +1,7 @@
 
 ==============================================================================
 Unfairness mitigation strategies: round 2
-Running 2 strategies
+Running 8 strategies
 ==============================================================================
 Warning message:
 package 'optparse' was built under R version 4.3.3 
@@ -9,8 +9,56 @@ package 'optparse' was built under R version 4.3.3
 --------------------------------------------------------------------------------
 Unfairness mitigation strategy 4.1.1:
   Combination of:
-  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 10%)
-  - 1.3.1: Downsample white's Absent to equalize rpresent base rates by race
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 10%)
+  - 1.1: Downsample black speakers to equalize token counts by speaker race
+--------------------------------------------------------------------------------
+Data: 8700 tokens with 157 predictors
+         race
+rpresent  black white  Sum
+  Absent    481  2877 3358
+  Present  3869  1473 5342
+  Sum      4350  4350 8700
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1105747 0.6613793
+  Present 0.8894253 0.3386207
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.1.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.1.2:
+  Combination of:
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 10%)
+  - 1.2: Downsample Present tokens to equalize token counts by rpresent
+--------------------------------------------------------------------------------
+Data: 6862 tokens with 157 predictors
+         race
+rpresent  black white  Sum
+  Absent    554  2877 3431
+  Present  2554   877 3431
+  Sum      3108  3754 6862
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1782497 0.7663825
+  Present 0.8217503 0.2336175
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.1.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.1.3:
+  Combination of:
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 10%)
+  - 1.3.1: Downsample white speakers' Absent tokens to equalize rpresent base rates by speaker race
 --------------------------------------------------------------------------------
 Data: 6593 tokens with 157 predictors
          race
@@ -26,15 +74,15 @@ rpresent      black     white
   Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
-Saving classifier as Run-UMS_UMS4.1.1.Rds
+Saving classifier as Run-UMS_UMS4.1.3.Rds
 Warning message:
 package 'optparse' was built under R version 4.3.3 
 
 --------------------------------------------------------------------------------
-Unfairness mitigation strategy 4.1.2:
+Unfairness mitigation strategy 4.1.4:
   Combination of:
-  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of race (cutoff: top 10%)
-  - 1.3.2: Downsample black's Present to equalize rpresent base rates by race
+  - 2.1.1: Empirical predictor selection, removing most influential predictors in classifier of speaker race (cutoff: top 10%)
+  - 1.3.2: Downsample black speakers' Present tokens to equalize rpresent base rates by speaker race
 --------------------------------------------------------------------------------
 Data: 5188 tokens with 157 predictors
          race
@@ -50,7 +98,103 @@ rpresent      black     white
   Sum     1.0000000 1.0000000
 Running classifier...
 Classifier finished running
-Saving classifier as Run-UMS_UMS4.1.2.Rds
+Saving classifier as Run-UMS_UMS4.1.4.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.1:
+  Combination of:
+  - 2.1.4: Empirical predictor selection, without measures with differential importance in separate-race auto-coders of rpresent (difference in rank places: at least p/2)
+  - 1.1: Downsample black speakers to equalize token counts by speaker race
+--------------------------------------------------------------------------------
+Data: 8700 tokens with 165 predictors
+         race
+rpresent  black white  Sum
+  Absent    481  2877 3358
+  Present  3869  1473 5342
+  Sum      4350  4350 8700
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1105747 0.6613793
+  Present 0.8894253 0.3386207
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.1.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.2:
+  Combination of:
+  - 2.1.4: Empirical predictor selection, without measures with differential importance in separate-race auto-coders of rpresent (difference in rank places: at least p/2)
+  - 1.2: Downsample Present tokens to equalize token counts by rpresent
+--------------------------------------------------------------------------------
+Data: 6862 tokens with 165 predictors
+         race
+rpresent  black white  Sum
+  Absent    554  2877 3431
+  Present  2554   877 3431
+  Sum      3108  3754 6862
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1782497 0.7663825
+  Present 0.8217503 0.2336175
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.2.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.3:
+  Combination of:
+  - 2.1.4: Empirical predictor selection, without measures with differential importance in separate-race auto-coders of rpresent (difference in rank places: at least p/2)
+  - 1.3.1: Downsample white speakers' Absent tokens to equalize rpresent base rates by speaker race
+--------------------------------------------------------------------------------
+Data: 6593 tokens with 165 predictors
+         race
+rpresent  black white  Sum
+  Absent    554   186  740
+  Present  4380  1473 5853
+  Sum      4934  1659 6593
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.1122821 0.1121157
+  Present 0.8877179 0.8878843
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.3.Rds
+Warning message:
+package 'optparse' was built under R version 4.3.3 
+
+--------------------------------------------------------------------------------
+Unfairness mitigation strategy 4.4.4:
+  Combination of:
+  - 2.1.4: Empirical predictor selection, without measures with differential importance in separate-race auto-coders of rpresent (difference in rank places: at least p/2)
+  - 1.3.2: Downsample black speakers' Present tokens to equalize rpresent base rates by speaker race
+--------------------------------------------------------------------------------
+Data: 5188 tokens with 165 predictors
+         race
+rpresent  black white  Sum
+  Absent    554  2877 3431
+  Present   284  1473 1757
+  Sum       838  4350 5188
+Proportionally by race:
+         race
+rpresent      black     white
+  Absent  0.6610979 0.6613793
+  Present 0.3389021 0.3386207
+  Sum     1.0000000 1.0000000
+Running classifier...
+Classifier finished running
+Saving classifier as Run-UMS_UMS4.4.4.Rds
 Warning message:
 package 'optparse' was built under R version 4.3.3 
 
